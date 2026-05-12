@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@source "../script.js";
+@variant dark (&:where(.dark, .dark *));
+@theme{
+    --color-vermelho: #BD122C;
+    --color-vermelho2: #991B1B;
+    --color-branco: #FAF6ED;
+    --color-preto: #222;
+
+    --font-inter: 'Inter', sans-serif;
+    --font-nunito: 'Nunito', serif;
+}
