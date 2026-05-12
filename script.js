@@ -98,7 +98,7 @@ function renderizarCategorias(categoriaAtiva = 'todos'){
         const btn = document.createElement('button');
         const ativo = categoria === categoriaAtiva
 
-        btn.className = `px-4 rounded-full text-sm font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap
+        btn.className = `py-2 px-4 rounded-full text-md font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap
             ${ativo ? 'bg-vermelho text-branco' : 'bg-branco/10 text-branco/80 hover:bg-vermelho2'}`;
 
         btn.textContent = categoria
@@ -126,23 +126,26 @@ function renderizarPratos(categoriaAtiva = 'todos'){
 
     pratosFiltrados.forEach(prato => {
         const card = document.createElement('div')
-        card.className = 'border border-branco/20 bg-white/5 backdrop-blur-lg text-branco rounded p-3 flex flex-col gap-2'
-
+        card.className = 'h-full items-stretch border border-branco/20 bg-white/5 backdrop-blur-lg text-branco rounded p-3 flex flex-col gap-2'
 
         card.innerHTML = `
-            <div class="h-32 flex items-center justify-center rounded overflow-hidden">
-                <img src="${prato.imagem}" alt="${prato.nome}" class="h-full w-full object-cover">
-            </div>
-
-            <h3 class="font-bold font-inter">${prato.nome}</h3>
-            <p class="text-branco/70 text-sm">${prato.descricao}</p>
-            <p class="text-vermelho font-bold">R$ ${prato.preco.toFixed(2).replace('.', ',')}</p>
-
-            <button 
-                class="btnAdicionarPrato bg-vermelho text-white px-4 py-2 rounded-full w-full cursor-pointer transition-all duration-200 hover:bg-vermelho2"
-                data-id="${prato.id}">
-                + Adicionar
-            </button>
+                <div class="h-32 flex items-center justify-center rounded overflow-hidden">
+                    <img src="${prato.imagem}" alt="${prato.nome}" class="h-full w-full object-cover">
+                </div>
+            
+                <div class="flex flex-col gap-2 flex-1   mb-4">
+                    <h3 class="font-bold font-inter">${prato.nome}</h3>
+                    <p class="text-branco/70 text-sm">${prato.descricao}</p>
+                    <p class="text-vermelho font-bold">R$ ${prato.preco.toFixed(2).replace('.', ',')}</p>
+                </div>
+    
+                <button 
+                    class="btnAdicionarPrato bg-vermelho text-white px-4 py-2 flex gap-2 text-center justify-center items-end rounded-full w-full cursor-pointer transition-all duration-200 hover:bg-vermelho2"
+                    data-id="${prato.id}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FAF6ED" viewBox="0 0 256 256">
+                    <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H136v32a8,8,0,0,1-16,0V136H88a8,8,0,0,1,0-16h32V88a8,8,0,0,1,16,0v32h32A8,8,0,0,1,176,128Z"></path>
+                    </svg> Adicionar
+                </button>
         `
 
         container.appendChild(card)
