@@ -7,7 +7,7 @@ function renderizarRestaurantes() {
 
     restaurantes.forEach((restaurante) => {
         const card = document.createElement('div')
-        card.className = 'border flex flex-col gap-2 bg-branco/30 backdrop-blur border-branco/20 text-preto rounded p-4 shadow-xl transition-all duration-200'
+        card.className = 'border-2 flex flex-col gap-2 bg-branco/30 backdrop-blur border-preto/5 text-preto rounded p-4 shadow-xl transition-all duration-200'
         card.innerHTML = `
             <div class="h-40 flex items-center justify-center mb-2">
                 <img class="h-full object-contain" src="${restaurante.logo}" alt="${restaurante.nome}">
@@ -164,4 +164,65 @@ function renderizarPratos(categoriaAtiva = 'todos'){
 
         container.appendChild(card)
     })
+
+    container.addEventListener('click', (event) => {
+        const btn = event.target.closest('.btnAdicionarPrato')
+        if (!btn) return
+
+        const id = +btn.dataset.id
+        console.log('ID do prato:', id)
+
+        abrirModalPrato(id)
+    })
 }
+
+let pratoAtivo = null
+let qtdPedido = 0
+function abrirModalPrato(id) {
+    const pratoAtivo = restauranteAtivo.pratos.find(p => p.id === id)
+    document.getElementById('modalPratoImagem').src = pratoAtivo.imagem
+    document.getElementById('modalPratoNome').textContent = pratoAtivo.nome
+    document.getElementById('modalPratoDescricao').textContent = pratoAtivo.descricao
+    document.getElementById('modalPratoPreco').textContent = `R$ ${pratoAtivo.preco.toFixed(2).replace('.', ',')}`
+    document.getElementById('quantidadeModal').textContent = 1
+
+    const modal = document.getElementById('modalPrato')
+    const conteudo = document.getElementById('conteudoModalPrato')
+
+    modal.classList.remove('hidden')
+
+    setTimeout(() => {
+        conteudo.classList.remove('translate-y-full', 'md:scale-90', 'md:opacity-0')
+        conteudo.classList.add('translate-y-0', 'md:scale-100', 'md:opacity-100')
+    }, 10)
+}
+
+function fecharModalPrato(){
+    const modal = document.getElementById('modalPrato')
+    const conteudo = document.getElementById('conteudoModalPrato')
+
+    conteudo.classList.remove('translate-y-0', 'md:scale-100', 'md:opacity-100')
+    conteudo.classList.add('translate-y-full', 'md:scale-90', 'md:opacity-0')
+
+    setTimeout(() => {
+        modal.classList.add('hidden')
+    }, 300)
+}
+
+document.getElementById('btnFecharModalPrato').addEventListener('click', fecharModalPrato)
+
+document.getElementById('modalPrato').addEventListener('click', (event) => {
+    if(event.target === document.getElementById('modalPrato')) fecharModalPrato()
+})
+
+document.getElementById('btnAumentar').addEventListener('click', () => {
+    qtdPedido++
+    document.getElementById('quantidadeModal').textContent = qtdPedido
+})
+
+document.getElementById('btnDiminuir').addEventListener('click', () => {
+    if (qtdPedido > 1) {
+        qtdPedido--
+        document.getElementById('quantidadeModal').textContent = qtdPedido
+    }
+})

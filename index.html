@@ -12,7 +12,7 @@
     </style>
     <title>Alto Sabor</title>
 </head>
-<body class="min-h-screen bg-white">
+<body class="min-h-screen bg-branco">
 <div class="absolute top-0 left-0 w-full h-40 bg-linear-to-b from-vermelho to-transparent -z-10"></div>
     <header class="bg-branco/20 backdrop-blur-lg border-b border-vermelho/40 sticky z-50 top-0 shadow-md px-3 md:px-0">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -83,5 +83,42 @@
         </section>
     </main>
 
+<!-- MODAL DO PRATO -->
+<div id="modalPrato" class="hidden fixed inset-0 bg-preto/60 z-50 flex items-end md:items-center justify-center transition-all duration-300">
+    <div id="conteudoModalPrato" class="bg-branco w-full md:max-w-md rounded-t-2xl md:rounded-2xl overflow-hidden translate-y-full md:translate-y-0 md:scale-90 md:opacity-0 transition-all duration-300">
+
+        <!-- IMAGEM COM BOTÃO FECHAR -->
+        <div class="relative">
+            <img id="modalPratoImagem" src="" alt="" class="w-full h-52 object-cover">
+            <button id="btnFecharModalPrato" class="absolute top-3 right-3 bg-black/50 text-branco w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-black/70 transition-all">
+                ✕
+            </button>
+        </div>
+
+        <!-- INFORMAÇÕES -->
+        <div class="p-5 flex flex-col gap-3">
+            <h2 id="modalPratoNome" class="text-xl font-bold font-inter text-gray-800"></h2>
+            <p id="modalPratoDescricao" class="text-gray-500 text-sm"></p>
+            <p id="modalPratoPreco" class="text-vermelho font-bold text-xl"></p>
+
+            <!-- CONTADOR -->
+            <div class="flex items-center justify-center gap-6 my-2">
+                <button id="btnDiminuir" class="bg-red-100 text-vermelho w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-red-200 transition-all">
+                    −
+                </button>
+                <span id="quantidadeModal" class="text-xl font-bold text-gray-800">1</span>
+                <button id="btnAumentar" class="bg-vermelho text-white w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-vermelho2 transition-all">
+                    +
+                </button>
+            </div>
+
+            <!-- BOTÃO ADICIONAR -->
+            <button id="btnAdicionarCarrinho" class="bg-vermelho text-white py-3 rounded-full font-bold text-lg cursor-pointer hover:bg-vermelho2 transition-all duration-200">
+                Adicionar ao Carrinho
+            </button>
+        </div>
+
+    </div>
+</div>
 </body>
 </html>
