@@ -80,14 +80,12 @@ function abrirCardapio(id){
 
 document.getElementById('containerRestaurantes').addEventListener('click', (event) => {
     const btn = event.target.closest('.btnVerCardapio');
-    if(!btn) return
-
-    const id = +btn.dataset.id
-    abrirCardapio(id)
+    if(btn) abrirCardapio(+btn.dataset.id)
 })
 
-document.getElementById('.btnVoltarRestaurantes').addEventListener('click', () => {
-    mostrarTela('telaRestaurantes')
+document.getElementById('containerPratos').addEventListener('click', (event) => {
+    const btn = event.target.closest('.btnAdicionarPrato');
+    if(btn) abrirModalPrato(+btn.dataset.id)
 })
 
 function renderizarCategorias(categoriaAtiva = 'todos'){
@@ -102,7 +100,6 @@ function renderizarCategorias(categoriaAtiva = 'todos'){
             ${ativo ? 'bg-vermelho text-branco' : 'bg-branco/10 backdrop-blur-lg text-preto/80 hover:text-branco hover:bg-vermelho2'}`;
 
         btn.textContent = categoria
-        btn.dataset.categoria = categoria
 
         btn.addEventListener('click', () => {
             renderizarCategorias(categoria)
@@ -114,15 +111,11 @@ function renderizarCategorias(categoriaAtiva = 'todos'){
 }
 
 function renderizarPratos(categoriaAtiva = 'todos'){
-    console.log('Categoria ativa:', JSON.stringify(categoriaAtiva))
-    console.log('Pratos do restaurante:', restauranteAtivo.pratos)
     const container = document.getElementById('containerPratos');
     container.innerHTML = ''
 
     const pratosFiltrados = categoriaAtiva === 'todos'
         ? restauranteAtivo.pratos : restauranteAtivo.pratos.filter(p => p.categoria === categoriaAtiva)
-    console.log('Pratos filtrados:', pratosFiltrados)
-
 
     pratosFiltrados.forEach(prato => {
         const card = document.createElement('div')
@@ -164,27 +157,19 @@ function renderizarPratos(categoriaAtiva = 'todos'){
 
         container.appendChild(card)
     })
-
-    container.addEventListener('click', (event) => {
-        const btn = event.target.closest('.btnAdicionarPrato')
-        if (!btn) return
-
-        const id = +btn.dataset.id
-        console.log('ID do prato:', id)
-
-        abrirModalPrato(id)
-    })
 }
 
 let pratoAtivo = null
-let qtdPedido = 0
+let qtdPedido = 1
 function abrirModalPrato(id) {
-    const pratoAtivo = restauranteAtivo.pratos.find(p => p.id === id)
+    pratoAtivo = restauranteAtivo.pratos.find(p => p.id === id)
+    qtdPedido = 1
+
     document.getElementById('modalPratoImagem').src = pratoAtivo.imagem
     document.getElementById('modalPratoNome').textContent = pratoAtivo.nome
     document.getElementById('modalPratoDescricao').textContent = pratoAtivo.descricao
     document.getElementById('modalPratoPreco').textContent = `R$ ${pratoAtivo.preco.toFixed(2).replace('.', ',')}`
-    document.getElementById('quantidadeModal').textContent = 1
+    document.getElementById('quantidadeModal').textContent = qtdPedido
 
     const modal = document.getElementById('modalPrato')
     const conteudo = document.getElementById('conteudoModalPrato')
@@ -212,7 +197,9 @@ function fecharModalPrato(){
 document.getElementById('btnFecharModalPrato').addEventListener('click', fecharModalPrato)
 
 document.getElementById('modalPrato').addEventListener('click', (event) => {
-    if(event.target === document.getElementById('modalPrato')) fecharModalPrato()
+    if(event.target === document.getElementById('modalPrato')){
+        fecharModalPrato()
+    }
 })
 
 document.getElementById('btnAumentar').addEventListener('click', () => {
