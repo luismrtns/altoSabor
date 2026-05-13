@@ -16,7 +16,7 @@ const restaurantes = [
                 descricao: "Molho de tomate, mussarela e manjericão",
                 preco: 45.00,
                 categoria: "Pizzas",
-                imagem: "img/margherita.png"
+                imagem: "img/1821a30a8a8acec9f74a1372be582610_sem_título_(18).jpg"
             },
             {
                 id: 2,
@@ -24,7 +24,7 @@ const restaurantes = [
                 descricao: "Mussarela, parmesão, gorgonzola e catupiry",
                 preco: 52.00,
                 categoria: "Pizzas",
-                imagem: "img/4queijos.png"
+                imagem: "img/iStock-1917699441.webp"
             },
             {
                 id: 3,
@@ -32,7 +32,7 @@ const restaurantes = [
                 descricao: "Refrigerante gelado",
                 preco: 12.00,
                 categoria: "Bebidas",
-                imagem: "img/coca.png"
+                imagem: "img/quer_fazer_hamburger_artesanal_perfeito_2019-05-14.jpg"
             }
         ]
     },
