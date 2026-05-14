@@ -8,7 +8,7 @@ const restaurantes = [
         endereco: "Rua das Flores, 123",
         horario: "11:00 - 23:00",
         whatsapp: "5588987654321",
-        categorias: ["todos", "Pizzas", "Bebidas"],
+        categorias: ["Todos", "Pizzas", "Bebidas"],
         pratos: [
             {
                 id: 1,
@@ -45,7 +45,7 @@ const restaurantes = [
         endereco: "Av. Principal, 456",
         horario: "10:00 - 22:00",
         whatsapp: "5588998765432",
-        categorias: ["todos", "Hambúrgueres", "Bebidas"],
+        categorias: ["Todos", "Hambúrgueres", "Bebidas"],
         pratos: [
             {
                 id: 1,
@@ -82,7 +82,7 @@ const restaurantes = [
         endereco: "Rua do Comércio, 789",
         horario: "12:00 - 23:00",
         whatsapp: "5588988887777",
-        categorias: ["todos", "Pratos", "Bebidas"],
+        categorias: ["Todos", "Pratos", "Bebidas"],
         pratos: [
             {
                 id: 1,

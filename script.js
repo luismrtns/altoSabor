@@ -88,7 +88,7 @@ document.getElementById('containerPratos').addEventListener('click', (event) => 
     if(btn) abrirModalPrato(+btn.dataset.id)
 })
 
-function renderizarCategorias(categoriaAtiva = 'todos'){
+function renderizarCategorias(categoriaAtiva = 'Todos'){
     const container = document.getElementById('containerCategorias');
     container.innerHTML = ''
 
@@ -110,11 +110,11 @@ function renderizarCategorias(categoriaAtiva = 'todos'){
     })
 }
 
-function renderizarPratos(categoriaAtiva = 'todos'){
+function renderizarPratos(categoriaAtiva = 'Todos'){
     const container = document.getElementById('containerPratos');
     container.innerHTML = ''
 
-    const pratosFiltrados = categoriaAtiva === 'todos'
+    const pratosFiltrados = categoriaAtiva === 'Todos'
         ? restauranteAtivo.pratos : restauranteAtivo.pratos.filter(p => p.categoria === categoriaAtiva)
 
     pratosFiltrados.forEach(prato => {
@@ -212,4 +212,110 @@ document.getElementById('btnDiminuir').addEventListener('click', () => {
         qtdPedido--
         document.getElementById('quantidadeModal').textContent = qtdPedido
     }
+})
+
+function atualizarCarrinho(){
+    const lista = document.getElementById('listaItensCarrinho')
+    const totalCarrinho = document.getElementById('valorTotalCarrinho')
+
+    lista.innerHTML = ''
+
+    if(carrinho.length === 0){
+        lista.innerHTML = `
+            <p class="text-gray-500 text-xl flex items-center justify-center gap-2 mt-10">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#991B1B" viewBox="0 0 256 256">
+                <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM80,140a12,12,0,1,1,12,12A12,12,0,0,1,80,140Zm78.66,48.43a8,8,0,0,1-11.09,2.23C141.07,186.34,136,184,128,184s-13.07,2.34-19.57,6.66a8,8,0,0,1-8.86-13.32C108,171.73,116.06,168,128,168s20,3.73,28.43,9.34A8,8,0,0,1,158.66,188.43ZM164,152a12,12,0,1,1,12-12A12,12,0,0,1,164,152Zm16.44-57.34-48,32a8,8,0,0,1-8.88,0l-48-32a8,8,0,1,1,8.88-13.32L128,110.39l43.56-29a8,8,0,0,1,8.88,13.32Z"></path>
+                </svg>
+                O seu carrinho está vazio.
+            </p>
+`;
+        totalCarrinho.textContent = 'R$ 0,00'
+        return
+    }
+
+    let valorTotal = 0
+
+    carrinho.forEach((item, index) => {
+        valorTotal += item.precoTotal
+
+        const div = document.createElement('div')
+        div.className = 'text-xl'
+        div.innerHTML = `
+            <div class="flex flex-col">
+                <span class="font-bold text-gray-800">${item.quantidade}x ${item.nome}</span>
+                <span class="text-gray-500 text-sm">R$ ${item.precoUnitario.toFixed(2).replace('.', ',')} cada</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="font-bold text-vermelho">R$ ${item.precoTotal.toFixed(2).replace('.', ',')}</span>
+                <button class="btnRemoverItem text-gray-400 hover:text-vermelho font-bold cursor-pointer flex items-center" data-index="${index}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="fill-vermelho p-1 hover:fill-vermelho2" viewBox="0 0 256 256">
+                        <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM112,168a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm0-120H96V40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8Z"></path>
+                    </svg>
+                </button>
+            </div>
+        `
+        lista.appendChild(div)
+    })
+    totalCarrinho.textContent = `R$ ${valorTotal.toFixed(2).replace('.', ',')}`
+}
+
+document.getElementById('listaItensCarrinho').addEventListener('click', (event) => {
+    const btnRemover = event.target.closest('.btnRemoverItem')
+
+    if(btnRemover){
+        const index = btnRemover.dataset.index
+        carrinho.splice(index,1)
+        atualizarCarrinho()
+    }
+})
+
+document.getElementById('btnAdicionarCarrinho').addEventListener('click', () => {
+    if (!pratoAtivo) return
+
+    const itemPedido = {
+        idPrato: pratoAtivo.id,
+        nome: pratoAtivo.nome,
+        precoUnitario: pratoAtivo.preco,
+        quantidade: qtdPedido,
+        precoTotal: pratoAtivo.preco * qtdPedido
+    }
+
+    carrinho.push(itemPedido)
+
+    atualizarCarrinho()
+    fecharModalPrato()
+})
+
+function abrirCarrinho(){
+    console.log('abrindo carrinho')
+    console.log('carrinho:', carrinho)
+    atualizarCarrinho()
+    const modal = document.getElementById('modalCarrinho')
+    const conteudo = document.getElementById('conteudoCarrinho')
+
+    modal.classList.remove('hidden')
+    setTimeout(() => {
+        conteudo.classList.remove('translate-x-full')
+    }, 10)
+}
+
+function fecharCarrinho(){
+    const modal = document.getElementById('modalCarrinho')
+    const conteudo = document.getElementById('conteudoCarrinho')
+
+    conteudo.classList.add('translate-x-full')
+
+    setTimeout(() => {
+        modal.classList.add('hidden')
+    },300)
+}
+
+document.getElementById('btnAbrirCarrinho').addEventListener('click', () => {
+    console.log('clicou no carrinho')
+    abrirCarrinho()
+})
+document.getElementById('btnFecharCarrinho').addEventListener('click', fecharCarrinho)
+
+document.getElementById('modalCarrinho').addEventListener('click', (event) => {
+    if(event.target === document.getElementById('modalCarrinho')) fecharCarrinho()
 })
