@@ -76,10 +76,11 @@ function abrirCardapio(id){
     document.getElementById('tempoTexto').textContent = restauranteAtivo.tempo
     document.getElementById('enderecoTexto').textContent = restauranteAtivo.endereco
     document.getElementById('horarioTexto').textContent = restauranteAtivo.horario
+    document.getElementById('containerCategorias').innerHTML = '';
 
-    renderizarCategorias()
-    renderizarPratos()
-    mostrarTela('telaCardapio')
+    renderizarCategorias();
+    renderizarPratos();
+    mostrarTela('telaCardapio');
 }
 
 document.getElementById('containerRestaurantes').addEventListener('click', (event) => {
@@ -92,26 +93,75 @@ document.getElementById('containerPratos').addEventListener('click', (event) => 
     if(btn) abrirModalPrato(+btn.dataset.id)
 })
 
-function renderizarCategorias(categoriaAtiva = 'Todos'){
+function renderizarCategorias(categoriaAtiva = 'todos') {
     const container = document.getElementById('containerCategorias');
-    container.innerHTML = ''
 
-    restauranteAtivo.categorias.forEach((categoria)=>{
-        const btn = document.createElement('button');
-        const ativo = categoria === categoriaAtiva
+    // 1. Preparação do Container
+    // Adicionamos 'relative' para que o slider flutue preso apenas dentro deste menu.
+    // O 'z-0' cria um contexto de camadas isolado, garantindo que o slider não suma para trás do site.
+    container.className = `bg-white flex gap-4 items-center justify-center mb-8 p-2 rounded-full shadow-md`
 
-        btn.className = `py-2 px-4 border-1 border-vermelho rounded-full text-md font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap
-            ${ativo ? 'bg-vermelho text-branco' : 'bg-branco/10 backdrop-blur-lg text-preto/80 hover:text-branco hover:bg-vermelho2'}`;
+    container.classList.add('relative', 'z-0');
 
-        btn.textContent = categoria
+    // 2. CRIAÇÃO DOS ELEMENTOS: Só acontece na primeira vez
+    if (container.innerHTML === '') {
 
-        btn.addEventListener('click', () => {
-            renderizarCategorias(categoria)
-            renderizarPratos(categoria)
-        })
+        // Criação do Slider (O fundo vermelho que se move)
+        const slider = document.createElement('div');
+        slider.id = 'sliderCategoria';
+        // 'absolute' o solta do layout. 'transition-all' cria o deslize. '-z-10' o joga para trás das letras.
+        slider.className = 'absolute bg-vermelho rounded-full transition-all duration-300 ease-in-out -z-10';
+        container.appendChild(slider);
 
-        container.appendChild(btn)
-    })
+        restauranteAtivo.categorias.forEach((categoria, index) => {
+            const btn = document.createElement('button');
+
+            // Note que não há cor de fundo inicial na classe base.
+            // Os botões precisam ser 'relative' para ficarem acima do slider (-z-10)
+            btn.className = 'btn-categoria relative py-2 px-4 text-md font-semibold cursor-pointer transition-colors duration-300 whitespace-nowrap opacity-0 translate-y-4 rounded-full';
+            btn.dataset.categoria = categoria;
+            btn.textContent = categoria;
+
+            btn.addEventListener('click', (event) => {
+                renderizarCategorias(categoria);
+                renderizarPratos(categoria);
+                event.target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            });
+
+            container.appendChild(btn);
+
+            // Animação de entrada
+            setTimeout(() => {
+                btn.classList.remove('opacity-0', 'translate-y-4');
+            }, 10 + (index * 50));
+        });
+    }
+
+    // 3. LÓGICA DE MOVIMENTO E ATUALIZAÇÃO VISUAL
+    const botoes = container.querySelectorAll('.btn-categoria');
+    const slider = document.getElementById('sliderCategoria');
+
+    botoes.forEach(btn => {
+        if (btn.dataset.categoria === categoriaAtiva) {
+            // BOTÃO ATIVO: Letra branca e fundo transparente para podermos ver o slider que virá para trás dele
+            btn.classList.add('text-branco', 'bg-transparent');
+            btn.classList.remove('text-preto/80', 'bg-branco/10', 'backdrop-blur-lg');
+
+            // CÁLCULO MATEMÁTICO DO DESLIZE:
+            // Usamos um pequeno atraso (10ms) para garantir que o navegador já renderizou os botões e sabe o tamanho deles.
+            setTimeout(() => {
+                slider.style.left = `${btn.offsetLeft}px`;      // Posição X exata do botão
+                slider.style.top = `${btn.offsetTop}px`;        // Posição Y exata do botão
+                slider.style.width = `${btn.offsetWidth}px`;    // Largura dinâmica (ex: 'Pizzas' é maior que 'Sucos')
+                slider.style.height = `${btn.offsetHeight}px`;  // Altura do botão
+            }, 10);
+
+        } else {
+            // BOTÕES INATIVOS: Restaura o aspecto de vidro translúcido (Glassmorphism) e letra escura
+            btn.classList.add('text-preto/80', 'bg-branco/10', 'backdrop-blur-lg');
+            btn.classList.remove('text-branco', 'bg-transparent');
+        }
+    });
 }
 
 function renderizarPratos(categoriaAtiva = 'Todos'){
@@ -121,9 +171,9 @@ function renderizarPratos(categoriaAtiva = 'Todos'){
     const pratosFiltrados = categoriaAtiva === 'Todos'
         ? restauranteAtivo.pratos : restauranteAtivo.pratos.filter(p => p.categoria === categoriaAtiva)
 
-    pratosFiltrados.forEach(prato => {
+    pratosFiltrados.forEach((prato, index) => {
         const card = document.createElement('div')
-        card.className = 'h-full items-stretch border border-preto/10 bg-branco/30 backdrop-blur shadow-lg text-preto rounded-lg p-3 flex flex-col gap-2'
+        card.className = 'border border-preto/10 bg-branco/30 backdrop-blur shadow-lg text-preto rounded-lg p-3 flex flex-col gap-2 opacity-0 translate-x-8 transition-all duration-500 h-full'
 
         card.innerHTML = `
                <div class="flex flex-row md:flex-col gap-3">
@@ -160,6 +210,9 @@ function renderizarPratos(categoriaAtiva = 'Todos'){
         `
 
         container.appendChild(card)
+        setTimeout(() => {
+            card.classList.remove('opacity-0', 'translate-x-8');
+        }, 10 + (index * 50));
     })
 }
 
