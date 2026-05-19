@@ -63,6 +63,10 @@ function mostrarTela(tela){
     document.getElementById(tela).classList.remove('hidden');
 }
 
+document.getElementById('btnVoltarRestaurantes').addEventListener('click', () => {
+    mostrarTela('telaRestaurantes')
+})
+
 function abrirCardapio(id){
     restauranteAtivo = restaurantes.find(r => r.id === id);
 
@@ -422,6 +426,11 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
     texto += `%0A%0A*Total:* R$ ${total.toFixed(2).replace('.', ',')}`;
 
     window.open(`https://wa.me/${telefone}?text=${texto}`, '_blank');
+
+    carrinho = []
+    atualizarCarrinho()
+    contadorCarrinho()
+    fecharCarrinho()
 })
 
 window.addEventListener('scroll', () => {
