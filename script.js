@@ -302,6 +302,9 @@ document.getElementById('listaItensCarrinho').addEventListener('click', (event) 
 
 function abrirCarrinho(){
     atualizarCarrinho()
+    const campos = document.getElementById('camposCheckout')
+    campos.classList.remove('opacity-100', 'translate-y-0')
+    campos.classList.add('hidden', 'opacity-0', 'translate-y-4')
 
     document.getElementById('camposCheckout').classList.add('hidden');
     document.getElementById('inputEndereco').value = '';
@@ -355,14 +358,6 @@ function contadorCarrinho(){
     }
 }
 
-document.getElementById('btnAbrirCarrinho').addEventListener('click', () => {
-    atualizarCarrinho()
-    const modal = document.getElementById('modalCarrinho');
-    const conteudo = document.getElementById('conteudoModalCarrinho');
-    modal.classList.remove('hidden');
-    setTimeout(() => conteudo.classList.remove('translate-x-full'), 10);
-})
-
 document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event) => {
     event.stopPropagation()
     if(!pratoAtivo) return
@@ -382,12 +377,18 @@ document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event
 })
 
 document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
+    console.log('clicou em finalizar')
+    console.log('carrinho:', carrinho)
+    console.log('campos:', document.getElementById('camposCheckout'))
     if(carrinho.length === 0) return
     const campos = document.getElementById('camposCheckout')
 
-    if(campos.classList.contains('max-h-0')){
-        campos.classList.remove('max-h-0', 'opacity-0')
-        campos.classList.add('max-h-[500px]', 'opacity-100')
+    if(campos.classList.contains('hidden')){
+        campos.classList.remove('hidden')
+        setTimeout(() => {
+            campos.classList.remove('opacity-0', 'translate-y-4')
+            campos.classList.add('opacity-100', 'translate-y-0')
+        }, 10)
         return
     }
 
@@ -417,7 +418,7 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
     });
 
     texto += `%0A*Endereço:* ${endereco}, Nº: ${numeroEndereco}`;
-    texto += `%0A*Pagamento:* ${pagamento}`;
+    texto += `%0A*Pagamento:* ${pagamentoSelecionado}`;
     texto += `%0A%0A*Total:* R$ ${total.toFixed(2).replace('.', ',')}`;
 
     window.open(`https://wa.me/${telefone}?text=${texto}`, '_blank');

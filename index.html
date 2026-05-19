@@ -140,7 +140,7 @@
             <p class="text-gray-500 text-center mt-10">O seu carrinho está vazio.</p>
         </div>
 
-        <div id="camposCheckout" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0 flex flex-col gap-6 p-4 bg-gray-50 border-t border-preto/10">
+        <div id="camposCheckout" class="hidden opacity-0 translate-y-4 transition-all duration-300 ease-in-out flex flex-col gap-6 p-4 bg-gray-50 border-t border-preto/10">
             <div class="grid grid-cols-3 gap-2 my-2">
                 <input type="text" id="inputEndereco" placeholder="Endereço de entrega" class="p-2 border rounded border-gray-300 col-span-2">
                 <input type="number" name="numeroCasa" id="numeroCasa" placeholder="Nº da casa" class="p-2 border rounded border-gray-300">
@@ -184,7 +184,7 @@
                 <span id="valorTotalCarrinho">R$ 0,00</span>
             </div>
             <button id="btnFinalizarPedido" class="bg-vermelho text-white py-3 rounded-xl font-bold text-lg cursor-pointer hover:bg-vermelho2 transition-all duration-200 w-full">
-                Finalizar no WhatsApp
+                Finalizar pedido
             </button>
         </div>
 
