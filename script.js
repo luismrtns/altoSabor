@@ -378,3 +378,18 @@ document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event
     contadorCarrinho()
     fecharModalPrato()
 })
+
+window.addEventListener('scroll', () => {
+    const logo = document.getElementById('logo');
+    const svg = document.getElementById('svg');
+
+    if (window.scrollY > 50) {
+        // Quando descer a tela: muda para vermelho
+        logo.classList.replace('text-branco', 'text-vermelho');
+        svg.classList.replace('fill-branco', 'fill-vermelho');
+    } else {
+        // Quando voltar para o topo: volta para transparente/branco
+        logo.classList.replace('text-vermelho', 'text-branco');
+        svg.classList.replace('fill-vermelho', 'fill-branco');
+    }
+});
