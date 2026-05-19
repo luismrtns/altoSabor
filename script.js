@@ -379,6 +379,24 @@ document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event
     fecharModalPrato()
 })
 
+document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
+    if (carrinho.length === 0) return
+
+    const telefone = restauranteAtivo.whatsapp
+    let texto = `Olá, gostaria de fazer um pedido:%0A%0A`;
+    let totalPedido = 0;
+
+    carrinho.forEach((item) => {
+        texto += `*${item.quantidade}x* ${item.nome} - R$ ${item.precoTotal.toFixed(2).replace('.', ',')}%0A`
+        totalPedido += item.precoTotal
+    })
+
+    texto += `%0A*Total:* R$ ${totalPedido.toFixed(2).replace('.', ',')}`;
+
+    const linkWhatsapp = `https://wa.me/${telefone}?text=${texto}`
+    window.open(linkWhatsapp, '_blank');
+})
+
 window.addEventListener('scroll', () => {
     const logo = document.getElementById('logo');
     const svg = document.getElementById('svg');
