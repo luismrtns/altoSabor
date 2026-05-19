@@ -271,9 +271,10 @@ document.getElementById('listaItensCarrinho').addEventListener('click', (event) 
     const btnDiminuir = event.target.closest('.btnDiminuirItem')
 
     if(btnRemover){
-        const index = btnRemover.dataset.index
+        const index = +btnRemover.dataset.index
         carrinho.splice(index,1)
         atualizarCarrinho()
+        contadorCarrinho()
     }
 
     if(btnAumentar){
@@ -281,6 +282,7 @@ document.getElementById('listaItensCarrinho').addEventListener('click', (event) 
         carrinho[index].quantidade++
         carrinho[index].precoTotal = carrinho[index].quantidade * carrinho[index].precoUnitario
         atualizarCarrinho()
+        contadorCarrinho()
         return
     }
 
@@ -292,26 +294,10 @@ document.getElementById('listaItensCarrinho').addEventListener('click', (event) 
         }else{
             carrinho.splice(index,1) // se a quantidade for 0, o produto some do carrinho
         }
+        contadorCarrinho()
         atualizarCarrinho()
         return
     }
-})
-
-document.getElementById('btnAdicionarCarrinho').addEventListener('click', () => {
-    if (!pratoAtivo) return
-
-    const itemPedido = {
-        idPrato: pratoAtivo.id,
-        nome: pratoAtivo.nome,
-        precoUnitario: pratoAtivo.preco,
-        quantidade: qtdPedido,
-        precoTotal: pratoAtivo.preco * qtdPedido
-    }
-
-    carrinho.push(itemPedido)
-
-    atualizarCarrinho()
-    fecharModalPrato()
 })
 
 function abrirCarrinho(){
@@ -358,9 +344,9 @@ function contadorCarrinho(){
         badge.textContent = totalItens
         badge.classList.remove('hidden')
 
-        bntCarrinho.classList.add('animate-pop')
+        bntCarrinho.classList.add('scale-110')
         setTimeout(() => {
-            bntCarrinho.classList.remove('animate-pop')
+            bntCarrinho.classList.remove('scale-110')
         }, 300)
     }else{
         badge.classList.add('hidden')
@@ -368,6 +354,15 @@ function contadorCarrinho(){
 }
 
 document.getElementById('btnAbrirCarrinho').addEventListener('click', () => {
+    atualizarCarrinho()
+    const modal = document.getElementById('modalCarrinho');
+    const conteudo = document.getElementById('conteudoModalCarrinho');
+    modal.classList.remove('hidden');
+    setTimeout(() => conteudo.classList.remove('translate-x-full'), 10);
+})
+
+document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event) => {
+    event.stopPropagation()
     if(!pratoAtivo) return
 
     const itemPedido = {
@@ -380,7 +375,6 @@ document.getElementById('btnAbrirCarrinho').addEventListener('click', () => {
 
     carrinho.push(itemPedido)
 
-    atualizarCarrinho()
     contadorCarrinho()
     fecharModalPrato()
 })
