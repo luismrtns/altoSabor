@@ -212,6 +212,7 @@ document.getElementById('btnDiminuir').addEventListener('click', () => {
         qtdPedido--
         document.getElementById('quantidadeModal').textContent = qtdPedido
     }
+    contadorCarrinho()
 })
 
 function atualizarCarrinho(){
@@ -252,6 +253,11 @@ function atualizarCarrinho(){
                         <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM112,168a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm0-120H96V40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8Z"></path>
                     </svg>
                 </button>
+                <div class="flex items-center gap-3">
+                    <button class="btnDiminuirItem bg-red-100 text-vermelho w-8 h-8 rounded-full flex items-center justify-center font-bold cursor-pointer hover:bg-red-200 transition-all" data-index="${index}">−</button>
+                    <span class="font-bold text-gray-800">${item.quantidade}</span>
+                    <button class="btnAumentarItem bg-vermelho text-white w-8 h-8 rounded-full flex items-center justify-center font-bold cursor-pointer hover:bg-vermelho2 transition-all" data-index="${index}">+</button>
+                </div>
             </div>
         `
         lista.appendChild(div)
@@ -261,11 +267,33 @@ function atualizarCarrinho(){
 
 document.getElementById('listaItensCarrinho').addEventListener('click', (event) => {
     const btnRemover = event.target.closest('.btnRemoverItem')
+    const btnAumentar = event.target.closest('.btnAumentarItem')
+    const btnDiminuir = event.target.closest('.btnDiminuirItem')
 
     if(btnRemover){
         const index = btnRemover.dataset.index
         carrinho.splice(index,1)
         atualizarCarrinho()
+    }
+
+    if(btnAumentar){
+        const index = +btnAumentar.dataset.index
+        carrinho[index].quantidade++
+        carrinho[index].precoTotal = carrinho[index].quantidade * carrinho[index].precoUnitario
+        atualizarCarrinho()
+        return
+    }
+
+    if(btnDiminuir){
+        const index = +btnDiminuir.dataset.index
+        if(carrinho[index].quantidade > 1){
+            carrinho[index].quantidade--
+            carrinho[index].precoTotal = carrinho[index].precoUnitario * carrinho[index].quantidade
+        }else{
+            carrinho.splice(index,1) // se a quantidade for 0, o produto some do carrinho
+        }
+        atualizarCarrinho()
+        return
     }
 })
 
@@ -318,4 +346,41 @@ document.getElementById('btnFecharCarrinho').addEventListener('click', fecharCar
 
 document.getElementById('modalCarrinho').addEventListener('click', (event) => {
     if(event.target === document.getElementById('modalCarrinho')) fecharCarrinho()
+})
+
+function contadorCarrinho(){
+    const badge = document.getElementById('contador')
+    const bntCarrinho = document.getElementById('btnAbrirCarrinho')
+
+    const totalItens = carrinho.reduce((acumulador, item) => acumulador + item.quantidade, 0)
+
+    if(totalItens > 0){
+        badge.textContent = totalItens
+        badge.classList.remove('hidden')
+
+        bntCarrinho.classList.add('animate-pop')
+        setTimeout(() => {
+            bntCarrinho.classList.remove('animate-pop')
+        }, 300)
+    }else{
+        badge.classList.add('hidden')
+    }
+}
+
+document.getElementById('btnAbrirCarrinho').addEventListener('click', () => {
+    if(!pratoAtivo) return
+
+    const itemPedido = {
+        idPrato: pratoAtivo.id,
+        nome: pratoAtivo.nome,
+        precoUnitario: pratoAtivo.preco,
+        quantidade: qtdPedido,
+        precoTotal: pratoAtivo.preco * qtdPedido
+    }
+
+    carrinho.push(itemPedido)
+
+    atualizarCarrinho()
+    contadorCarrinho()
+    fecharModalPrato()
 })
