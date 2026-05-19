@@ -301,9 +301,11 @@ document.getElementById('listaItensCarrinho').addEventListener('click', (event) 
 })
 
 function abrirCarrinho(){
-    console.log('abrindo carrinho')
-    console.log('carrinho:', carrinho)
     atualizarCarrinho()
+
+    document.getElementById('camposCheckout').classList.add('hidden');
+    document.getElementById('inputEndereco').value = '';
+
     const modal = document.getElementById('modalCarrinho')
     const conteudo = document.getElementById('conteudoCarrinho')
 
@@ -380,21 +382,45 @@ document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event
 })
 
 document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
-    if (carrinho.length === 0) return
+    if(carrinho.length === 0) return
+    const campos = document.getElementById('camposCheckout')
 
-    const telefone = restauranteAtivo.whatsapp
-    let texto = `Olá, gostaria de fazer um pedido:%0A%0A`;
-    let totalPedido = 0;
+    if(campos.classList.contains('max-h-0')){
+        campos.classList.remove('max-h-0', 'opacity-0')
+        campos.classList.add('max-h-[500px]', 'opacity-100')
+        return
+    }
 
-    carrinho.forEach((item) => {
-        texto += `*${item.quantidade}x* ${item.nome} - R$ ${item.precoTotal.toFixed(2).replace('.', ',')}%0A`
-        totalPedido += item.precoTotal
-    })
+    const endereco = document.getElementById('inputEndereco').value
+    const numeroEndereco = document.getElementById('numeroCasa').value
+    const pagamento = document.querySelector('input[name="pagamento"]:checked')
 
-    texto += `%0A*Total:* R$ ${totalPedido.toFixed(2).replace('.', ',')}`;
+    if(!endereco){
+        alert('Por favor, insira um endereço!')
+        return
+    }
 
-    const linkWhatsapp = `https://wa.me/${telefone}?text=${texto}`
-    window.open(linkWhatsapp, '_blank');
+    if(!pagamento){
+        alert('Por favor, insira um método pagamento!')
+        return
+    }
+
+    const pagamentoSelecionado = pagamento.value
+
+    const telefone = restauranteAtivo.whatsapp;
+    let texto = `*Novo Pedido!*%0A%0A`;
+    let total = 0;
+
+    carrinho.forEach(item => {
+        texto += `${item.quantidade}x ${item.nome} - R$ ${item.precoTotal.toFixed(2).replace('.', ',')}%0A`;
+        total += item.precoTotal;
+    });
+
+    texto += `%0A*Endereço:* ${endereco}, Nº: ${numeroEndereco}`;
+    texto += `%0A*Pagamento:* ${pagamento}`;
+    texto += `%0A%0A*Total:* R$ ${total.toFixed(2).replace('.', ',')}`;
+
+    window.open(`https://wa.me/${telefone}?text=${texto}`, '_blank');
 })
 
 window.addEventListener('scroll', () => {
