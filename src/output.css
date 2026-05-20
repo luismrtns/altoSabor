@@ -46,7 +46,7 @@
     --default-mono-font-family: var(--font-mono);
     --color-vermelho: #BD122C;
     --color-vermelho2: #991B1B;
-    --color-branco: #FAF6ED;
+    --color-branco: #FAF9F5;
     --color-preto: #1F1D1E;
     --font-inter: 'Inter', sans-serif;
   }
@@ -498,7 +498,7 @@
     border-bottom-width: 1px;
   }
   .border-branco\/10 {
-    border-color: color-mix(in srgb, #FAF6ED 10%, transparent);
+    border-color: color-mix(in srgb, #FAF9F5 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-branco) 10%, transparent);
     }
@@ -540,25 +540,25 @@
     background-color: var(--color-branco);
   }
   .bg-branco\/10 {
-    background-color: color-mix(in srgb, #FAF6ED 10%, transparent);
+    background-color: color-mix(in srgb, #FAF9F5 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-branco) 10%, transparent);
     }
   }
   .bg-branco\/20 {
-    background-color: color-mix(in srgb, #FAF6ED 20%, transparent);
+    background-color: color-mix(in srgb, #FAF9F5 20%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-branco) 20%, transparent);
     }
   }
   .bg-branco\/30 {
-    background-color: color-mix(in srgb, #FAF6ED 30%, transparent);
+    background-color: color-mix(in srgb, #FAF9F5 30%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-branco) 30%, transparent);
     }
   }
   .bg-branco\/60 {
-    background-color: color-mix(in srgb, #FAF6ED 60%, transparent);
+    background-color: color-mix(in srgb, #FAF9F5 60%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-branco) 60%, transparent);
     }
@@ -805,12 +805,6 @@
   .outline-none {
     --tw-outline-style: none;
     outline-style: none;
-  }
-  .text-shadow-vermelho2 {
-    --tw-text-shadow-color: #991B1B;
-    @supports (color: color-mix(in lab, red, red)) {
-      --tw-text-shadow-color: color-mix(in oklab, var(--color-vermelho2) var(--tw-text-shadow-alpha), transparent);
-    }
   }
   .group-hover\:fill-branco {
     &:is(:where(.group):hover *) {
@@ -1165,15 +1159,6 @@
   syntax: "*";
   inherits: false;
 }
-@property --tw-text-shadow-color {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-text-shadow-alpha {
-  syntax: "<percentage>";
-  inherits: false;
-  initial-value: 100%;
-}
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
@@ -1219,8 +1204,6 @@
       --tw-backdrop-sepia: initial;
       --tw-duration: initial;
       --tw-ease: initial;
-      --tw-text-shadow-color: initial;
-      --tw-text-shadow-alpha: 100%;
     }
   }
 }
