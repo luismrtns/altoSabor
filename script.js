@@ -93,31 +93,23 @@ document.getElementById('containerPratos').addEventListener('click', (event) => 
     if(btn) abrirModalPrato(+btn.dataset.id)
 })
 
-function renderizarCategorias(categoriaAtiva = 'todos') {
+function renderizarCategorias(categoriaAtiva = 'Todos') {
     const container = document.getElementById('containerCategorias');
 
-    // 1. Preparação do Container
-    // Adicionamos 'relative' para que o slider flutue preso apenas dentro deste menu.
-    // O 'z-0' cria um contexto de camadas isolado, garantindo que o slider não suma para trás do site.
-    container.className = `bg-white flex gap-4 items-center justify-center mb-8 p-2 rounded-full shadow-md`
+    container.className = `flex gap-4 items-center justify-center mb-8 p-2 rounded-full shadow-md`
 
     container.classList.add('relative', 'z-0');
 
-    // 2. CRIAÇÃO DOS ELEMENTOS: Só acontece na primeira vez
     if (container.innerHTML === '') {
 
-        // Criação do Slider (O fundo vermelho que se move)
         const slider = document.createElement('div');
         slider.id = 'sliderCategoria';
-        // 'absolute' o solta do layout. 'transition-all' cria o deslize. '-z-10' o joga para trás das letras.
         slider.className = 'absolute bg-vermelho rounded-full transition-all duration-300 ease-in-out -z-10';
         container.appendChild(slider);
 
         restauranteAtivo.categorias.forEach((categoria, index) => {
             const btn = document.createElement('button');
 
-            // Note que não há cor de fundo inicial na classe base.
-            // Os botões precisam ser 'relative' para ficarem acima do slider (-z-10)
             btn.className = 'btn-categoria relative py-2 px-4 text-md font-semibold cursor-pointer transition-colors duration-300 whitespace-nowrap opacity-0 translate-y-4 rounded-full';
             btn.dataset.categoria = categoria;
             btn.textContent = categoria;
@@ -130,14 +122,12 @@ function renderizarCategorias(categoriaAtiva = 'todos') {
 
             container.appendChild(btn);
 
-            // Animação de entrada
             setTimeout(() => {
                 btn.classList.remove('opacity-0', 'translate-y-4');
             }, 10 + (index * 50));
         });
     }
 
-    // 3. LÓGICA DE MOVIMENTO E ATUALIZAÇÃO VISUAL
     const botoes = container.querySelectorAll('.btn-categoria');
     const slider = document.getElementById('sliderCategoria');
 
@@ -148,7 +138,6 @@ function renderizarCategorias(categoriaAtiva = 'todos') {
             btn.classList.remove('text-preto/80', 'bg-branco/10', 'backdrop-blur-lg');
 
             // CÁLCULO MATEMÁTICO DO DESLIZE:
-            // Usamos um pequeno atraso (10ms) para garantir que o navegador já renderizou os botões e sabe o tamanho deles.
             setTimeout(() => {
                 slider.style.left = `${btn.offsetLeft}px`;      // Posição X exata do botão
                 slider.style.top = `${btn.offsetTop}px`;        // Posição Y exata do botão
@@ -157,7 +146,6 @@ function renderizarCategorias(categoriaAtiva = 'todos') {
             }, 10);
 
         } else {
-            // BOTÕES INATIVOS: Restaura o aspecto de vidro translúcido (Glassmorphism) e letra escura
             btn.classList.add('text-preto/80', 'bg-branco/10', 'backdrop-blur-lg');
             btn.classList.remove('text-branco', 'bg-transparent');
         }
@@ -227,6 +215,7 @@ function abrirModalPrato(id) {
     document.getElementById('modalPratoDescricao').textContent = pratoAtivo.descricao
     document.getElementById('modalPratoPreco').textContent = `R$ ${pratoAtivo.preco.toFixed(2).replace('.', ',')}`
     document.getElementById('quantidadeModal').textContent = qtdPedido
+    document.getElementById('observacaoPrato').value = ''
 
     const modal = document.getElementById('modalPrato')
     const conteudo = document.getElementById('conteudoModalPrato')
@@ -424,7 +413,8 @@ document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event
         nome: pratoAtivo.nome,
         precoUnitario: pratoAtivo.preco,
         quantidade: qtdPedido,
-        precoTotal: pratoAtivo.preco * qtdPedido
+        precoTotal: pratoAtivo.preco * qtdPedido,
+        observacao: pratoAtivo.observacao
     }
 
     carrinho.push(itemPedido)
@@ -434,9 +424,6 @@ document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event
 })
 
 document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
-    console.log('clicou em finalizar')
-    console.log('carrinho:', carrinho)
-    console.log('campos:', document.getElementById('camposCheckout'))
     if(carrinho.length === 0) return
     const campos = document.getElementById('camposCheckout')
 
@@ -449,11 +436,14 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
         return
     }
 
+    const nome = document.getElementById('nomePessoa').value
     const endereco = document.getElementById('inputEndereco').value
     const numeroEndereco = document.getElementById('numeroCasa').value
     const pagamento = document.querySelector('input[name="pagamento"]:checked')
     const pagamentoSelecionado = pagamento.value
     let trocoMsg = ''
+    const obs = document.getElementById('observacaoPrato').value
+
     if(pagamentoSelecionado === 'Dinheiro'){
         const valorPago = parseFloat(document.getElementById('inputTroco').value)
         const totalCarrinho = carrinho.reduce((acc, item) => acc + item.precoTotal, 0)
@@ -483,9 +473,13 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
 
     carrinho.forEach(item => {
         texto += `${item.quantidade}x ${item.nome} - R$ ${item.precoTotal.toFixed(2).replace('.', ',')}%0A`;
+        if(obs && obs.trim() !== ''){
+            texto += `_↳ Obs: ${obs}_%0A`
+        }
         total += item.precoTotal;
     });
 
+    texto += `%0A*Cliente:* ${nome}`
     texto += `%0A*Endereço:* ${endereco}, Nº: ${numeroEndereco}`;
     texto += `%0A*Pagamento:* ${pagamentoSelecionado}`;
     texto += trocoMsg
@@ -504,7 +498,7 @@ const containerTroco = document.getElementById('containerTroco');
 const inputTroco = document.getElementById('inputTroco');
 const textoTrocoCalculado = document.getElementById('textoTrocoCalculado');
 
-// 1. Mostrar/Esconder o campo de acordo com o método
+// mostrar/Esconder o campo de acordo com o pagamento
 radiosPagamento.forEach(radio => {
     radio.addEventListener('change', (event) => {
         if (event.target.value === 'Dinheiro') {
@@ -513,20 +507,20 @@ radiosPagamento.forEach(radio => {
         } else {
             containerTroco.classList.add('hidden');
             containerTroco.classList.remove('flex');
-            // Limpa os dados se a pessoa mudar para Pix ou Cartão
+            // limpa os dados se a pessoa mudar para Pix ou Cartão
             inputTroco.value = '';
             textoTrocoCalculado.textContent = '';
         }
     });
 });
 
-// 2. Calcular o troco em TEMPO REAL enquanto o usuário digita
+// calcular o troco em tempo real enquanto o usuário digita
 inputTroco.addEventListener('input', (event) => {
-    // Calcula o total do carrinho varrendo o array na memória
+    // calcula o total do carrinho varrendo o array na memória
     const totalPedido = carrinho.reduce((acumulador, item) => acumulador + item.precoTotal, 0);
     const valorPago = parseFloat(event.target.value);
 
-    // Se o campo estiver vazio ou o usuário digitar texto inválido, apaga a mensagem
+    // se o campo estiver vazio ou o usuário digitar texto inválido, apaga a mensagem
     if (isNaN(valorPago) || valorPago <= 0) {
         textoTrocoCalculado.textContent = '';
         return;

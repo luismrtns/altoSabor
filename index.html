@@ -118,6 +118,7 @@
                 </button>
             </div>
 
+            <textarea id="observacaoPrato" rows="2" placeholder="Alguma observação? Ex: Tirar cebola, carne mal passada..." class="w-full mt-3 p-2 border border-gray-300 rounded-lg text-sm outline-none focus:border-vermelho"></textarea>
             <!-- BOTÃO ADICIONAR -->
             <button id="btnAdicionarCarrinho" class="bg-vermelho text-white py-3 rounded-full font-bold text-lg cursor-pointer hover:bg-vermelho2 transition-all duration-200">
                 Adicionar ao Carrinho
@@ -146,10 +147,12 @@
         </div>
 
         <div id="camposCheckout" class="hidden opacity-0 translate-y-4 transition-all duration-300 ease-in-out flex flex-col gap-6 p-4 bg-gray-50 border-t border-preto/10">
+            <input class="p-2 border rounded border-gray-300" type="text" name="nomePessoa" id="nomePessoa" placeholder="Seu nome">
             <div class="grid grid-cols-3 gap-2 my-2">
                 <input type="text" id="inputEndereco" placeholder="Endereço de entrega" class="p-2 border rounded border-gray-300 col-span-2">
                 <input type="number" name="numeroCasa" id="numeroCasa" placeholder="Nº da casa" class="p-2 border rounded border-gray-300">
             </div>
+            <span class="font-semibold text-vermelho2">Forma de pagamento</span>
             <div class="flex gap-3 justify-center">
                 <label class="flex-1 cursor-pointer">
                     <input type="radio" name="pagamento" value="Pix" class="peer sr-only">
@@ -182,7 +185,7 @@
                 </label>
             </div>
             <div id="containerTroco" class="hidden flex-col gap-2 mt-4">
-                <label for="inputTroco" class="text-sm font-semibold text-gray-700">Precisa de troco para quanto?</label>
+                <label for="inputTroco" class="text-sm font-semibold text-gray-700">Quanto vai pagar em dinheiro?</label>
                 <input type="number" id="inputTroco" placeholder="Ex: 50" class="p-2 border rounded border-gray-300 outline-none focus:border-vermelho transition-all">
                 <span id="textoTrocoCalculado" class="text-sm font-bold"></span>
             </div>

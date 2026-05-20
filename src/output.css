@@ -733,6 +733,9 @@
   .text-vermelho {
     color: var(--color-vermelho);
   }
+  .text-vermelho2 {
+    color: var(--color-vermelho2);
+  }
   .text-white {
     color: var(--color-white);
   }
@@ -802,6 +805,12 @@
   .outline-none {
     --tw-outline-style: none;
     outline-style: none;
+  }
+  .text-shadow-vermelho2 {
+    --tw-text-shadow-color: #991B1B;
+    @supports (color: color-mix(in lab, red, red)) {
+      --tw-text-shadow-color: color-mix(in oklab, var(--color-vermelho2) var(--tw-text-shadow-alpha), transparent);
+    }
   }
   .group-hover\:fill-branco {
     &:is(:where(.group):hover *) {
@@ -1156,6 +1165,15 @@
   syntax: "*";
   inherits: false;
 }
+@property --tw-text-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-text-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
@@ -1201,6 +1219,8 @@
       --tw-backdrop-sepia: initial;
       --tw-duration: initial;
       --tw-ease: initial;
+      --tw-text-shadow-color: initial;
+      --tw-text-shadow-alpha: 100%;
     }
   }
 }
