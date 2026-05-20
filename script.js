@@ -452,6 +452,20 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
     const endereco = document.getElementById('inputEndereco').value
     const numeroEndereco = document.getElementById('numeroCasa').value
     const pagamento = document.querySelector('input[name="pagamento"]:checked')
+    const pagamentoSelecionado = pagamento.value
+    let trocoMsg = ''
+    if(pagamentoSelecionado === 'Dinheiro'){
+        const valorPago = parseFloat(document.getElementById('inputTroco').value)
+        const totalCarrinho = carrinho.reduce((acc, item) => acc + item.precoTotal, 0)
+
+        if(!valorPago || valorPago < totalCarrinho){
+            alert('Por favor, informe um valor de troco válido e maior que o preço do pedido.')
+            return;
+        }
+
+        const valorTroco = valorPago - totalCarrinho
+        trocoMsg = `%0A*Troco para:* R$ ${valorPago.toFixed(2).replace('.', ',')} (Levar R$ ${valorTroco.toFixed(2).replace('.', ',')} de troco)`;
+    }
 
     if(!endereco){
         alert('Por favor, insira um endereço!')
@@ -462,8 +476,6 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
         alert('Por favor, insira um método pagamento!')
         return
     }
-
-    const pagamentoSelecionado = pagamento.value
 
     const telefone = restauranteAtivo.whatsapp;
     let texto = `*Novo Pedido!*%0A%0A`;
@@ -476,6 +488,7 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
 
     texto += `%0A*Endereço:* ${endereco}, Nº: ${numeroEndereco}`;
     texto += `%0A*Pagamento:* ${pagamentoSelecionado}`;
+    texto += trocoMsg
     texto += `%0A%0A*Total:* R$ ${total.toFixed(2).replace('.', ',')}`;
 
     window.open(`https://wa.me/${telefone}?text=${texto}`, '_blank');
@@ -485,6 +498,54 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
     contadorCarrinho()
     fecharCarrinho()
 })
+
+const radiosPagamento = document.querySelectorAll('input[name="pagamento"]');
+const containerTroco = document.getElementById('containerTroco');
+const inputTroco = document.getElementById('inputTroco');
+const textoTrocoCalculado = document.getElementById('textoTrocoCalculado');
+
+// 1. Mostrar/Esconder o campo de acordo com o método
+radiosPagamento.forEach(radio => {
+    radio.addEventListener('change', (event) => {
+        if (event.target.value === 'Dinheiro') {
+            containerTroco.classList.remove('hidden');
+            containerTroco.classList.add('flex');
+        } else {
+            containerTroco.classList.add('hidden');
+            containerTroco.classList.remove('flex');
+            // Limpa os dados se a pessoa mudar para Pix ou Cartão
+            inputTroco.value = '';
+            textoTrocoCalculado.textContent = '';
+        }
+    });
+});
+
+// 2. Calcular o troco em TEMPO REAL enquanto o usuário digita
+inputTroco.addEventListener('input', (event) => {
+    // Calcula o total do carrinho varrendo o array na memória
+    const totalPedido = carrinho.reduce((acumulador, item) => acumulador + item.precoTotal, 0);
+    const valorPago = parseFloat(event.target.value);
+
+    // Se o campo estiver vazio ou o usuário digitar texto inválido, apaga a mensagem
+    if (isNaN(valorPago) || valorPago <= 0) {
+        textoTrocoCalculado.textContent = '';
+        return;
+    }
+
+    // Validação matemática
+    if (valorPago < totalPedido) {
+        textoTrocoCalculado.textContent = 'Valor insuficiente para cobrir o pedido.';
+        textoTrocoCalculado.className = 'text-sm font-bold text-vermelho';
+    } else if (valorPago === totalPedido) {
+        textoTrocoCalculado.textContent = 'Não precisa de troco.';
+        textoTrocoCalculado.className = 'text-sm font-bold text-gray-500';
+    } else {
+        const troco = valorPago - totalPedido;
+        textoTrocoCalculado.textContent = `O entregador levará R$ ${troco.toFixed(2).replace('.', ',')} de troco.`;
+        // Usa uma cor verde do Tailwind para indicar sucesso visualmente
+        textoTrocoCalculado.className = 'text-sm font-bold text-green-600';
+    }
+});
 
 window.addEventListener('scroll', () => {
     const logo = document.getElementById('logo');
