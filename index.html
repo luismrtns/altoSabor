@@ -132,9 +132,9 @@
 <!--MODAL CARRINHO-->
 <div id="modalCarrinho" class="hidden fixed inset-0 bg-preto/60 z-60 flex justify-end transition-all duration-300">
 
-    <div id="conteudoCarrinho" class="bg-branco w-full md:w-96 h-full flex flex-col translate-x-full transition-transform duration-300 shadow-2xl">
+    <div id="conteudoCarrinho" class="bg-branco w-full md:w-96 h-full flex flex-col overflow-y-auto translate-x-full transition-transform duration-300 shadow-2xl">
 
-        <div class="p-4 border-b border-preto/10 flex items-center justify-between bg-white">
+        <div class="p-4 border-b border-preto/10 flex items-center justify-between bg-white shrink-0">
             <h2 class="text-xl font-bold font-inter text-gray-800">Resumo do seu pedido</h2>
             <button id="btnFecharCarrinho" class="text-branco flex items-center p-2 text-2xl font-bold cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#991B1B" viewBox="0 0 256 256">
@@ -147,7 +147,7 @@
             <p class="text-gray-500 text-center mt-10">O seu carrinho está vazio.</p>
         </div>
 
-        <div id="camposCheckout" class="hidden opacity-0 translate-y-4 transition-all duration-300 ease-in-out flex flex-col gap-6 p-4 bg-gray-50 border-t border-preto/10">
+        <div id="camposCheckout" class="hidden opacity-0 translate-y-4 transition-all duration-300 ease-in-out flex flex-col gap-4 p-4 bg-gray-50 border-t border-preto/10 shrink-0">
             <input class="p-2 border rounded border-gray-300" type="text" name="nomePessoa" id="nomePessoa" placeholder="Seu nome">
             <span class="font-semibold text-vermelho2">Como quer receber?</span>
             <div class="grid grid-cols-2 gap-3">
@@ -207,7 +207,7 @@
             </div>
         </div>
 
-        <div class="p-4 border-t border-preto/10 bg-gray-50 flex flex-col gap-3">
+        <div class="p-4 border-t border-preto/10 bg-gray-50 flex flex-col gap-3 shrink-0">
             <div class="flex justify-between items-center text-lg font-bold text-gray-800">
                 <span>Total:</span>
                 <span id="valorTotalCarrinho">R$ 0,00</span>
