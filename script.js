@@ -1,11 +1,38 @@
 let restauranteAtivo = null
 let carrinho = []
 
+// Converte um horário no formato "HH:MM" para minutos desde o começo do dia.
+function horarioParaMinutos(horario) {
+    const [horas, minutos] = horario.split(':').map(Number)
+    return (horas * 60) + minutos
+}
+
+// Verifica se o restaurante está aberto agora e retorna o texto/classe do selo.
+function obterStatusRestaurante(restaurante) {
+    const [abertura, fechamento] = restaurante.horario.split(' - ')
+    const agora = new Date()
+    const minutosAgora = (agora.getHours() * 60) + agora.getMinutes()
+    const minutosAbertura = horarioParaMinutos(abertura)
+    const minutosFechamento = horarioParaMinutos(fechamento)
+
+    const aberto = minutosFechamento > minutosAbertura
+        ? minutosAgora >= minutosAbertura && minutosAgora < minutosFechamento
+        : minutosAgora >= minutosAbertura || minutosAgora < minutosFechamento
+
+    return {
+        aberto,
+        texto: aberto ? 'Aberto agora' : 'Fechado',
+        classe: aberto ? 'bg-green-100 text-green-700' : 'bg-red-100 text-vermelho'
+    }
+}
+
+// Monta os cards da tela inicial com todos os restaurantes cadastrados.
 function renderizarRestaurantes() {
     const container = document.getElementById('containerRestaurantes')
     container.innerHTML = ''
 
     restaurantes.forEach((restaurante) => {
+        const status = obterStatusRestaurante(restaurante)
         const card = document.createElement('div')
         card.className = 'border-2 flex flex-col gap-2 bg-branco/30 backdrop-blur border-preto/5 text-preto rounded p-4 shadow-xl transition-all duration-200'
         card.innerHTML = `
@@ -13,14 +40,17 @@ function renderizarRestaurantes() {
                 <img class="h-full object-contain" src="${restaurante.logo}" alt="${restaurante.nome}">
             </div>
 
-            <div class="flex items-center gap-2 my-1">
+            <div class="flex items-center justify-between gap-2 my-1">
                 <h3 class="text-xl font-bold font-inter">${restaurante.nome}</h3>
-                <p class="text-preto/80 flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#BD122C" viewBox="0 0 256 256">
-                        <path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"></path>
-                    </svg>
-                    ${restaurante.avaliacao}
-                </p>
+                <span class="${status.classe} text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">${status.texto}</span>
+            </div>
+
+            <p class="text-preto/80 flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#BD122C" viewBox="0 0 256 256">
+                    <path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"></path>
+                </svg>
+                ${restaurante.avaliacao}
+            </p>
             </div>
 
             <p class="text-preto/80 text-sm flex items-center gap-1">
@@ -56,6 +86,7 @@ function renderizarRestaurantes() {
 }
 renderizarRestaurantes()
 
+// Esconde as telas principais e mostra apenas a tela recebida por parâmetro.
 function mostrarTela(tela){
     document.getElementById('telaRestaurantes').classList.add('hidden');
     document.getElementById('telaCardapio').classList.add('hidden');
@@ -63,15 +94,20 @@ function mostrarTela(tela){
     document.getElementById(tela).classList.remove('hidden');
 }
 
+// Volta da tela de cardápio para a lista de restaurantes.
 document.getElementById('btnVoltarRestaurantes').addEventListener('click', () => {
     mostrarTela('telaRestaurantes')
 })
 
+// Carrega os dados do restaurante selecionado e abre a tela do cardápio.
 function abrirCardapio(id){
     restauranteAtivo = restaurantes.find(r => r.id === id);
+    const status = obterStatusRestaurante(restauranteAtivo)
 
     document.getElementById('logoCardapio').src = restauranteAtivo.logo;
     document.getElementById('nomeCardapio').textContent = restauranteAtivo.nome;
+    document.getElementById('statusCardapio').textContent = status.texto;
+    document.getElementById('statusCardapio').className = `${status.classe} text-xs font-bold px-3 py-1 rounded-full w-fit`;
     document.getElementById('notaCardapio').textContent = restauranteAtivo.avaliacao;
     document.getElementById('tempoTexto').textContent = restauranteAtivo.tempo
     document.getElementById('enderecoTexto').textContent = restauranteAtivo.endereco
@@ -83,16 +119,19 @@ function abrirCardapio(id){
     mostrarTela('telaCardapio');
 }
 
+// Detecta clique no botão "Ver Cardápio" usando delegação de eventos.
 document.getElementById('containerRestaurantes').addEventListener('click', (event) => {
     const btn = event.target.closest('.btnVerCardapio');
     if(btn) abrirCardapio(+btn.dataset.id)
 })
 
+// Detecta clique no botão de adicionar prato e abre o modal do item.
 document.getElementById('containerPratos').addEventListener('click', (event) => {
     const btn = event.target.closest('.btnAdicionarPrato');
     if(btn) abrirModalPrato(+btn.dataset.id)
 })
 
+// Renderiza as categorias do restaurante e atualiza o botão ativo com slider.
 function renderizarCategorias(categoriaAtiva = 'Todos') {
     const container = document.getElementById('containerCategorias');
 
@@ -114,6 +153,7 @@ function renderizarCategorias(categoriaAtiva = 'Todos') {
             btn.dataset.categoria = categoria;
             btn.textContent = categoria;
 
+            // Filtra os pratos quando uma categoria é selecionada.
             btn.addEventListener('click', (event) => {
                 renderizarCategorias(categoria);
                 renderizarPratos(categoria);
@@ -152,6 +192,7 @@ function renderizarCategorias(categoriaAtiva = 'Todos') {
     });
 }
 
+// Mostra os pratos do restaurante, filtrando pela categoria selecionada.
 function renderizarPratos(categoriaAtiva = 'Todos'){
     const container = document.getElementById('containerPratos');
     container.innerHTML = ''
@@ -206,6 +247,8 @@ function renderizarPratos(categoriaAtiva = 'Todos'){
 
 let pratoAtivo = null
 let qtdPedido = 1
+
+// Preenche e exibe o modal com os detalhes do prato escolhido.
 function abrirModalPrato(id) {
     pratoAtivo = restauranteAtivo.pratos.find(p => p.id === id)
     qtdPedido = 1
@@ -228,6 +271,7 @@ function abrirModalPrato(id) {
     }, 10)
 }
 
+// Fecha o modal do prato com a animação de saída.
 function fecharModalPrato(){
     const modal = document.getElementById('modalPrato')
     const conteudo = document.getElementById('conteudoModalPrato')
@@ -240,19 +284,23 @@ function fecharModalPrato(){
     }, 300)
 }
 
+// Fecha o modal do prato pelo botão de fechar.
 document.getElementById('btnFecharModalPrato').addEventListener('click', fecharModalPrato)
 
+// Fecha o modal do prato quando o usuário clica fora do conteúdo.
 document.getElementById('modalPrato').addEventListener('click', (event) => {
     if(event.target === document.getElementById('modalPrato')){
         fecharModalPrato()
     }
 })
 
+// Aumenta a quantidade do prato dentro do modal.
 document.getElementById('btnAumentar').addEventListener('click', () => {
     qtdPedido++
     document.getElementById('quantidadeModal').textContent = qtdPedido
 })
 
+// Diminui a quantidade do prato no modal, sem deixar ficar menor que 1.
 document.getElementById('btnDiminuir').addEventListener('click', () => {
     if (qtdPedido > 1) {
         qtdPedido--
@@ -261,6 +309,7 @@ document.getElementById('btnDiminuir').addEventListener('click', () => {
     contadorCarrinho()
 })
 
+// Atualiza visualmente a lista de itens do carrinho e recalcula o total.
 function atualizarCarrinho(){
     const lista = document.getElementById('listaItensCarrinho')
     const totalCarrinho = document.getElementById('valorTotalCarrinho')
@@ -311,6 +360,7 @@ function atualizarCarrinho(){
     totalCarrinho.textContent = `R$ ${valorTotal.toFixed(2).replace('.', ',')}`
 }
 
+// Controla remover, aumentar e diminuir itens dentro do carrinho.
 document.getElementById('listaItensCarrinho').addEventListener('click', (event) => {
     const btnRemover = event.target.closest('.btnRemoverItem')
     const btnAumentar = event.target.closest('.btnAumentarItem')
@@ -346,6 +396,7 @@ document.getElementById('listaItensCarrinho').addEventListener('click', (event) 
     }
 })
 
+// Abre o carrinho e reseta a área de checkout para o estado inicial.
 function abrirCarrinho(){
     atualizarCarrinho()
     const campos = document.getElementById('camposCheckout')
@@ -354,6 +405,9 @@ function abrirCarrinho(){
 
     document.getElementById('camposCheckout').classList.add('hidden');
     document.getElementById('inputEndereco').value = '';
+    document.getElementById('numeroCasa').value = '';
+    document.querySelector('input[name="tipoPedido"][value="Entrega"]').checked = true;
+    document.getElementById('camposEndereco').classList.remove('hidden');
 
     const modal = document.getElementById('modalCarrinho')
     const conteudo = document.getElementById('conteudoCarrinho')
@@ -364,6 +418,7 @@ function abrirCarrinho(){
     }, 10)
 }
 
+// Fecha o carrinho lateral com a animação de saída.
 function fecharCarrinho(){
     const modal = document.getElementById('modalCarrinho')
     const conteudo = document.getElementById('conteudoCarrinho')
@@ -375,16 +430,21 @@ function fecharCarrinho(){
     },300)
 }
 
+// Abre o carrinho ao clicar no botão do cabeçalho.
 document.getElementById('btnAbrirCarrinho').addEventListener('click', () => {
     console.log('clicou no carrinho')
     abrirCarrinho()
 })
+
+// Fecha o carrinho ao clicar no botão de fechar.
 document.getElementById('btnFecharCarrinho').addEventListener('click', fecharCarrinho)
 
+// Fecha o carrinho quando o usuário clica fora do painel lateral.
 document.getElementById('modalCarrinho').addEventListener('click', (event) => {
     if(event.target === document.getElementById('modalCarrinho')) fecharCarrinho()
 })
 
+// Atualiza o contador de itens no botão do carrinho.
 function contadorCarrinho(){
     const badge = document.getElementById('contador')
     const bntCarrinho = document.getElementById('btnAbrirCarrinho')
@@ -404,9 +464,11 @@ function contadorCarrinho(){
     }
 }
 
+// Adiciona o prato atual ao carrinho com quantidade e observação.
 document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event) => {
     event.stopPropagation()
     if(!pratoAtivo) return
+    const observacao = document.getElementById('observacaoPrato').value.trim()
 
     const itemPedido = {
         idPrato: pratoAtivo.id,
@@ -414,7 +476,7 @@ document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event
         precoUnitario: pratoAtivo.preco,
         quantidade: qtdPedido,
         precoTotal: pratoAtivo.preco * qtdPedido,
-        observacao: pratoAtivo.observacao
+        observacao
     }
 
     carrinho.push(itemPedido)
@@ -423,8 +485,13 @@ document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event
     fecharModalPrato()
 })
 
+// Primeiro abre o checkout; no segundo clique valida os dados e envia ao WhatsApp.
 document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
     if(carrinho.length === 0) return
+    if(restauranteAtivo && !obterStatusRestaurante(restauranteAtivo).aberto){
+        alert('Este estabelecimento está fechado no momento.')
+        return
+    }
     const campos = document.getElementById('camposCheckout')
 
     if(campos.classList.contains('hidden')){
@@ -437,12 +504,33 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
     }
 
     const nome = document.getElementById('nomePessoa').value
+    const tipoPedido = document.querySelector('input[name="tipoPedido"]:checked')
     const endereco = document.getElementById('inputEndereco').value
     const numeroEndereco = document.getElementById('numeroCasa').value
     const pagamento = document.querySelector('input[name="pagamento"]:checked')
-    const pagamentoSelecionado = pagamento.value
     let trocoMsg = ''
-    const obs = document.getElementById('observacaoPrato').value
+
+    if(!nome){
+        alert('Por favor, insira seu nome!')
+        return
+    }
+
+    if(!tipoPedido){
+        alert('Por favor, escolha entrega ou retirada!')
+        return
+    }
+
+    if(tipoPedido.value === 'Entrega' && !endereco){
+        alert('Por favor, insira um endereço!')
+        return
+    }
+
+    if(!pagamento){
+        alert('Por favor, escolha uma forma de pagamento!')
+        return
+    }
+
+    const pagamentoSelecionado = pagamento.value
 
     if(pagamentoSelecionado === 'Dinheiro'){
         const valorPago = parseFloat(document.getElementById('inputTroco').value)
@@ -457,30 +545,25 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
         trocoMsg = `%0A*Troco para:* R$ ${valorPago.toFixed(2).replace('.', ',')} (Levar R$ ${valorTroco.toFixed(2).replace('.', ',')} de troco)`;
     }
 
-    if(!endereco){
-        alert('Por favor, insira um endereço!')
-        return
-    }
-
-    if(!pagamento){
-        alert('Por favor, insira um método pagamento!')
-        return
-    }
-
     const telefone = restauranteAtivo.whatsapp;
     let texto = `*Novo Pedido!*%0A%0A`;
     let total = 0;
 
     carrinho.forEach(item => {
         texto += `${item.quantidade}x ${item.nome} - R$ ${item.precoTotal.toFixed(2).replace('.', ',')}%0A`;
-        if(obs && obs.trim() !== ''){
-            texto += `_↳ Obs: ${obs}_%0A`
+        if(item.observacao){
+            texto += `_Obs: ${item.observacao}_%0A`
         }
         total += item.precoTotal;
     });
 
     texto += `%0A*Cliente:* ${nome}`
-    texto += `%0A*Endereço:* ${endereco}, Nº: ${numeroEndereco}`;
+    texto += `%0A*Tipo:* ${tipoPedido.value}`;
+    if(tipoPedido.value === 'Entrega'){
+        texto += `%0A*Endereço:* ${endereco}, Nº: ${numeroEndereco}`;
+    }else{
+        texto += `%0A*Retirada em:* ${restauranteAtivo.endereco}`;
+    }
     texto += `%0A*Pagamento:* ${pagamentoSelecionado}`;
     texto += trocoMsg
     texto += `%0A%0A*Total:* R$ ${total.toFixed(2).replace('.', ',')}`;
@@ -493,12 +576,28 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
     fecharCarrinho()
 })
 
+const radiosTipoPedido = document.querySelectorAll('input[name="tipoPedido"]');
+const camposEndereco = document.getElementById('camposEndereco');
+
+// Alterna entre entrega e retirada, mostrando ou escondendo o endereço.
+radiosTipoPedido.forEach(radio => {
+    radio.addEventListener('change', (event) => {
+        if(event.target.value === 'Retirada'){
+            camposEndereco.classList.add('hidden')
+            document.getElementById('inputEndereco').value = ''
+            document.getElementById('numeroCasa').value = ''
+        }else{
+            camposEndereco.classList.remove('hidden')
+        }
+    })
+})
+
 const radiosPagamento = document.querySelectorAll('input[name="pagamento"]');
 const containerTroco = document.getElementById('containerTroco');
 const inputTroco = document.getElementById('inputTroco');
 const textoTrocoCalculado = document.getElementById('textoTrocoCalculado');
 
-// mostrar/Esconder o campo de acordo com o pagamento
+// Mostra ou esconde o campo de troco de acordo com a forma de pagamento.
 radiosPagamento.forEach(radio => {
     radio.addEventListener('change', (event) => {
         if (event.target.value === 'Dinheiro') {
@@ -514,7 +613,7 @@ radiosPagamento.forEach(radio => {
     });
 });
 
-// calcular o troco em tempo real enquanto o usuário digita
+// Calcula o troco em tempo real enquanto o usuário digita o valor pago.
 inputTroco.addEventListener('input', (event) => {
     // calcula o total do carrinho varrendo o array na memória
     const totalPedido = carrinho.reduce((acumulador, item) => acumulador + item.precoTotal, 0);
@@ -536,11 +635,11 @@ inputTroco.addEventListener('input', (event) => {
     } else {
         const troco = valorPago - totalPedido;
         textoTrocoCalculado.textContent = `O entregador levará R$ ${troco.toFixed(2).replace('.', ',')} de troco.`;
-        // Usa uma cor verde do Tailwind para indicar sucesso visualmente
         textoTrocoCalculado.className = 'text-sm font-bold text-green-600';
     }
 });
 
+// Muda a cor do logo no topo quando a página é rolada.
 window.addEventListener('scroll', () => {
     const logo = document.getElementById('logo');
     const svg = document.getElementById('svg');

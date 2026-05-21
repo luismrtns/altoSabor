@@ -49,6 +49,7 @@
                 </div>
                 <div class="flex flex-col gap-1">
                     <h2 id="nomeCardapio" class="text-2xl text-preto font-bold font-inter"></h2>
+                    <span id="statusCardapio" class="text-xs font-bold px-3 py-1 rounded-full w-fit"></span>
                     <p id="avaliacaoCardapio" class="text-preto/70 flex items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#BD122C" viewBox="0 0 256 256">
                             <path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"></path>
@@ -148,7 +149,22 @@
 
         <div id="camposCheckout" class="hidden opacity-0 translate-y-4 transition-all duration-300 ease-in-out flex flex-col gap-6 p-4 bg-gray-50 border-t border-preto/10">
             <input class="p-2 border rounded border-gray-300" type="text" name="nomePessoa" id="nomePessoa" placeholder="Seu nome">
-            <div class="grid grid-cols-3 gap-2 my-2">
+            <span class="font-semibold text-vermelho2">Como quer receber?</span>
+            <div class="grid grid-cols-2 gap-3">
+                <label class="cursor-pointer">
+                    <input type="radio" name="tipoPedido" value="Entrega" class="peer sr-only" checked>
+                    <div class="flex items-center justify-center p-3 border-2 border-gray-200 rounded-xl text-sm font-semibold transition-all duration-200 peer-checked:border-vermelho peer-checked:bg-vermelho/10">
+                        Entrega
+                    </div>
+                </label>
+                <label class="cursor-pointer">
+                    <input type="radio" name="tipoPedido" value="Retirada" class="peer sr-only">
+                    <div class="flex items-center justify-center p-3 border-2 border-gray-200 rounded-xl text-sm font-semibold transition-all duration-200 peer-checked:border-vermelho peer-checked:bg-vermelho/10">
+                        Retirada
+                    </div>
+                </label>
+            </div>
+            <div id="camposEndereco" class="grid grid-cols-3 gap-2 my-2">
                 <input type="text" id="inputEndereco" placeholder="Endereço de entrega" class="p-2 border rounded border-gray-300 col-span-2">
                 <input type="number" name="numeroCasa" id="numeroCasa" placeholder="Nº da casa" class="p-2 border rounded border-gray-300">
             </div>
