@@ -148,6 +148,12 @@
         </div>
 
         <div id="camposCheckout" class="hidden opacity-0 translate-y-4 transition-all duration-300 ease-in-out flex flex-col gap-4 p-4 bg-gray-50 border-t border-preto/10 shrink-0">
+            <div class="flex items-center justify-between gap-3">
+                <span class="font-semibold text-vermelho2">Dados do pedido</span>
+                <button id="btnRevisarPedido" type="button" class="text-sm font-semibold text-vermelho cursor-pointer">
+                    Revisar pedido
+                </button>
+            </div>
             <input class="p-2 border rounded border-gray-300" type="text" name="nomePessoa" id="nomePessoa" placeholder="Seu nome">
             <span class="font-semibold text-vermelho2">Como quer receber?</span>
             <div class="grid grid-cols-2 gap-3">
@@ -219,6 +225,32 @@
 
     </div>
 
+</div>
+
+<!--MODAL DE AVISOS E CONFIRMAÇÕES-->
+<div id="modalMensagem" class="hidden fixed inset-0 bg-preto/60 z-[80] flex items-center justify-center px-4">
+    <div id="conteudoModalMensagem" class="bg-branco w-full max-w-sm rounded-2xl p-5 shadow-2xl opacity-0 scale-95 transition-all duration-200">
+        <div class="flex items-start gap-3">
+            <div class="w-11 h-11 rounded-full bg-vermelho/10 flex items-center justify-center shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#BD122C" viewBox="0 0 256 256">
+                    <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,48a12,12,0,1,1-12,12A12,12,0,0,1,128,72Zm8,112a8,8,0,0,1-16,0V120a8,8,0,0,1,16,0Z"></path>
+                </svg>
+            </div>
+            <div class="flex flex-col gap-2">
+                <h2 id="tituloModalMensagem" class="text-lg font-bold font-inter text-preto"></h2>
+                <p id="textoModalMensagem" class="text-sm text-preto/70 leading-relaxed"></p>
+            </div>
+        </div>
+
+        <div class="flex gap-3 mt-6">
+            <button id="btnCancelarMensagem" type="button" class="hidden flex-1 border border-preto/10 text-preto py-3 rounded-xl font-bold cursor-pointer hover:bg-gray-100 transition-all">
+                Cancelar
+            </button>
+            <button id="btnConfirmarMensagem" type="button" class="flex-1 bg-vermelho text-white py-3 rounded-xl font-bold cursor-pointer hover:bg-vermelho2 transition-all">
+                Entendi
+            </button>
+        </div>
+    </div>
 </div>
 
 </body>

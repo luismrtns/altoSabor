@@ -1,6 +1,66 @@
 let restauranteAtivo = null
 let carrinho = []
 
+// Abre um modal personalizado para avisos e confirmações.
+function abrirMensagem({ titulo, texto, confirmarTexto = 'Entendi', cancelarTexto = 'Cancelar', mostrarCancelar = false }) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('modalMensagem')
+        const conteudo = document.getElementById('conteudoModalMensagem')
+        const tituloElemento = document.getElementById('tituloModalMensagem')
+        const textoElemento = document.getElementById('textoModalMensagem')
+        const btnConfirmar = document.getElementById('btnConfirmarMensagem')
+        const btnCancelar = document.getElementById('btnCancelarMensagem')
+
+        tituloElemento.textContent = titulo
+        textoElemento.textContent = texto
+        btnConfirmar.textContent = confirmarTexto
+        btnCancelar.textContent = cancelarTexto
+        btnCancelar.classList.toggle('hidden', !mostrarCancelar)
+
+        const fechar = (resultado) => {
+            conteudo.classList.remove('opacity-100', 'scale-100')
+            conteudo.classList.add('opacity-0', 'scale-95')
+
+            setTimeout(() => {
+                modal.classList.add('hidden')
+                btnConfirmar.onclick = null
+                btnCancelar.onclick = null
+                modal.onclick = null
+                resolve(resultado)
+            }, 200)
+        }
+
+        btnConfirmar.onclick = () => fechar(true)
+        btnCancelar.onclick = () => fechar(false)
+        modal.onclick = (event) => {
+            if(event.target === modal) fechar(false)
+        }
+
+        modal.classList.remove('hidden')
+
+        setTimeout(() => {
+            conteudo.classList.remove('opacity-0', 'scale-95')
+            conteudo.classList.add('opacity-100', 'scale-100')
+        }, 10)
+    })
+}
+
+// Mostra um aviso simples sem usar alert do navegador.
+function mostrarAviso(titulo, texto) {
+    return abrirMensagem({ titulo, texto })
+}
+
+// Mostra uma confirmação personalizada no lugar do confirm do navegador.
+function mostrarConfirmacao(titulo, texto, confirmarTexto = 'Confirmar') {
+    return abrirMensagem({
+        titulo,
+        texto,
+        confirmarTexto,
+        cancelarTexto: 'Cancelar',
+        mostrarCancelar: true
+    })
+}
+
 // Converte um horário no formato "HH:MM" para minutos desde o começo do dia.
 function horarioParaMinutos(horario) {
     const [horas, minutos] = horario.split(':').map(Number)
@@ -405,10 +465,7 @@ document.getElementById('listaItensCarrinho').addEventListener('click', (event) 
 // Abre o carrinho e reseta a área de checkout para o estado inicial.
 function abrirCarrinho(){
     atualizarCarrinho()
-    const campos = document.getElementById('camposCheckout')
-    campos.classList.remove('opacity-100', 'translate-y-0')
-    campos.classList.add('hidden', 'opacity-0', 'translate-y-4')
-    document.getElementById('btnFinalizarPedido').textContent = 'Continuar'
+    esconderCheckout()
 
     document.getElementById('camposCheckout').classList.add('hidden');
     document.getElementById('inputEndereco').value = '';
@@ -423,6 +480,14 @@ function abrirCarrinho(){
     setTimeout(() => {
         conteudo.classList.remove('translate-x-full')
     }, 10)
+}
+
+// Recolhe os campos do checkout para o cliente conseguir revisar o pedido.
+function esconderCheckout(){
+    const campos = document.getElementById('camposCheckout')
+    campos.classList.remove('opacity-100', 'translate-y-0')
+    campos.classList.add('hidden', 'opacity-0', 'translate-y-4')
+    document.getElementById('btnFinalizarPedido').textContent = 'Continuar'
 }
 
 // Fecha o carrinho lateral com a animação de saída.
@@ -451,6 +516,9 @@ document.getElementById('modalCarrinho').addEventListener('click', (event) => {
     if(event.target === document.getElementById('modalCarrinho')) fecharCarrinho()
 })
 
+// Recolhe o checkout para deixar o resumo do pedido visível novamente.
+document.getElementById('btnRevisarPedido').addEventListener('click', esconderCheckout)
+
 // Atualiza o contador de itens no botão do carrinho.
 function contadorCarrinho(){
     const badge = document.getElementById('contador')
@@ -472,14 +540,18 @@ function contadorCarrinho(){
 }
 
 // Adiciona o prato atual ao carrinho com quantidade e observação.
-document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event) => {
+document.getElementById('btnAdicionarCarrinho').addEventListener('click', async (event) => {
     event.stopPropagation()
     if(!pratoAtivo) return
     const observacao = document.getElementById('observacaoPrato').value.trim()
     const itemDeOutroRestaurante = carrinho.length > 0 && carrinho[0].idRestaurante !== restauranteAtivo.id
 
     if(itemDeOutroRestaurante){
-        const confirmarTroca = confirm(`Seu carrinho tem itens de ${carrinho[0].nomeRestaurante}. Deseja limpar o carrinho para pedir em ${restauranteAtivo.nome}?`)
+        const confirmarTroca = await mostrarConfirmacao(
+            'Trocar restaurante?',
+            `Seu carrinho tem itens de ${carrinho[0].nomeRestaurante}. Deseja limpar o carrinho para pedir em ${restauranteAtivo.nome}?`,
+            'Limpar carrinho'
+        )
 
         if(!confirmarTroca) return
 
@@ -506,10 +578,10 @@ document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event
 })
 
 // Primeiro abre o checkout; no segundo clique valida os dados e envia ao WhatsApp.
-document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
+document.getElementById('btnFinalizarPedido').addEventListener('click', async () => {
     if(carrinho.length === 0) return
     if(restauranteAtivo && !obterStatusRestaurante(restauranteAtivo).aberto){
-        alert('Este estabelecimento está fechado no momento.')
+        await mostrarAviso('Estabelecimento fechado', 'Este estabelecimento está fechado no momento.')
         return
     }
     const campos = document.getElementById('camposCheckout')
@@ -532,22 +604,22 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
     let trocoMsg = ''
 
     if(!nome){
-        alert('Por favor, insira seu nome!')
+        await mostrarAviso('Nome obrigatório', 'Por favor, insira seu nome.')
         return
     }
 
     if(!tipoPedido){
-        alert('Por favor, escolha entrega ou retirada!')
+        await mostrarAviso('Tipo do pedido', 'Por favor, escolha entrega ou retirada.')
         return
     }
 
     if(tipoPedido.value === 'Entrega' && !endereco){
-        alert('Por favor, insira um endereço!')
+        await mostrarAviso('Endereço obrigatório', 'Por favor, insira um endereço para entrega.')
         return
     }
 
     if(!pagamento){
-        alert('Por favor, escolha uma forma de pagamento!')
+        await mostrarAviso('Forma de pagamento', 'Por favor, escolha uma forma de pagamento.')
         return
     }
 
@@ -558,7 +630,7 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
         const totalCarrinho = carrinho.reduce((acc, item) => acc + item.precoTotal, 0)
 
         if(!valorPago || valorPago < totalCarrinho){
-            alert('Por favor, informe um valor de troco válido e maior que o preço do pedido.')
+            await mostrarAviso('Troco inválido', 'Informe um valor em dinheiro maior ou igual ao total do pedido.')
             return;
         }
 
