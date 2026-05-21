@@ -330,6 +330,12 @@ function atualizarCarrinho(){
     }
 
     let valorTotal = 0
+    const nomeRestaurantePedido = carrinho[0].nomeRestaurante
+
+    const resumoRestaurante = document.createElement('div')
+    resumoRestaurante.className = 'text-sm text-gray-600 bg-red-50 border border-red-100 rounded-lg p-3'
+    resumoRestaurante.innerHTML = `Pedido em <strong class="text-vermelho">${nomeRestaurantePedido}</strong>`
+    lista.appendChild(resumoRestaurante)
 
     carrinho.forEach((item, index) => {
         valorTotal += item.precoTotal
@@ -402,6 +408,7 @@ function abrirCarrinho(){
     const campos = document.getElementById('camposCheckout')
     campos.classList.remove('opacity-100', 'translate-y-0')
     campos.classList.add('hidden', 'opacity-0', 'translate-y-4')
+    document.getElementById('btnFinalizarPedido').textContent = 'Continuar'
 
     document.getElementById('camposCheckout').classList.add('hidden');
     document.getElementById('inputEndereco').value = '';
@@ -469,8 +476,21 @@ document.getElementById('btnAdicionarCarrinho').addEventListener('click', (event
     event.stopPropagation()
     if(!pratoAtivo) return
     const observacao = document.getElementById('observacaoPrato').value.trim()
+    const itemDeOutroRestaurante = carrinho.length > 0 && carrinho[0].idRestaurante !== restauranteAtivo.id
+
+    if(itemDeOutroRestaurante){
+        const confirmarTroca = confirm(`Seu carrinho tem itens de ${carrinho[0].nomeRestaurante}. Deseja limpar o carrinho para pedir em ${restauranteAtivo.nome}?`)
+
+        if(!confirmarTroca) return
+
+        carrinho = []
+        atualizarCarrinho()
+        contadorCarrinho()
+    }
 
     const itemPedido = {
+        idRestaurante: restauranteAtivo.id,
+        nomeRestaurante: restauranteAtivo.nome,
         idPrato: pratoAtivo.id,
         nome: pratoAtivo.nome,
         precoUnitario: pratoAtivo.preco,
@@ -499,6 +519,7 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
         setTimeout(() => {
             campos.classList.remove('opacity-0', 'translate-y-4')
             campos.classList.add('opacity-100', 'translate-y-0')
+            document.getElementById('btnFinalizarPedido').textContent = 'Enviar pelo WhatsApp'
         }, 10)
         return
     }
@@ -573,6 +594,7 @@ document.getElementById('btnFinalizarPedido').addEventListener('click', () => {
     carrinho = []
     atualizarCarrinho()
     contadorCarrinho()
+    document.getElementById('btnFinalizarPedido').textContent = 'Continuar'
     fecharCarrinho()
 })
 
