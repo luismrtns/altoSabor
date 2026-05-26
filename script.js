@@ -81,7 +81,7 @@ function obterStatusRestaurante(restaurante) {
 
     return {
         aberto,
-        texto: aberto ? 'Aberto agora' : 'Fechado',
+        texto: aberto ? `Aberto até ${fechamento}` : `Fechado, abre às ${abertura}`,
         classe: aberto ? 'bg-green-100 text-green-700' : 'bg-red-100 text-vermelho'
     }
 }
@@ -188,12 +188,15 @@ function mostrarTela(tela){
 // Volta da tela de cardápio para a lista de restaurantes.
 document.getElementById('btnVoltarRestaurantes').addEventListener('click', () => {
     mostrarTela('telaRestaurantes')
+    window.history.pushState({}, '', window.location.pathname)
 })
 
 // Carrega os dados do restaurante selecionado e abre a tela do cardápio.
 function abrirCardapio(id){
     restauranteAtivo = restaurantes.find(r => r.id === id);
     const status = obterStatusRestaurante(restauranteAtivo)
+    const novaUrl = `${window.location.pathname}?restaurante=${id}`
+    window.history.pushState({},'', novaUrl)
 
     document.getElementById('logoCardapio').src = restauranteAtivo.logo;
     document.getElementById('nomeCardapio').textContent = restauranteAtivo.nome;
@@ -779,3 +782,33 @@ window.addEventListener('scroll', () => {
         svg.classList.replace('fill-vermelho', 'fill-branco');
     }
 });
+
+async function compartilharCardapio(){
+    if(!restauranteAtivo) return
+
+    const url = `${window.location.origin}${window.location.pathname}?restaurante=${restauranteAtivo.id}`
+    const texto = `Veja o cardápio de ${restauranteAtivo.nome} no Alto Sabor.`
+
+    if(navigator.share){
+        await navigator.share({
+            title: restauranteAtivo.nome,
+            text: texto,
+            url
+        })
+        return
+    }
+    await navigator.clipboard.writeText(url)
+    await mostrarAviso('Link copiado!', 'O link do cardápio foi copiado!')
+}
+
+document.getElementById('btnCompartilharCardapio').addEventListener('click', compartilharCardapio)
+
+function abrirRestauranteCompartilhado(){
+    const parametros = new URLSearchParams(window.location.search) // pega a parte da URL depois do ?
+    const idRestaurante = +parametros.get('restaurante') // pega o valor do parâmetro restaurante.
+
+    if(idRestaurante){
+        abrirCardapio(idRestaurante)
+    }
+}
+abrirRestauranteCompartilhado()
