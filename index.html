@@ -32,7 +32,22 @@
 
     <main class="max-w-6xl mx-auto px-4 py-8">
         <section id="telaRestaurantes">
+            <div class="px-6 md:px-0 mb-6">
+                <label for="inputBusca" class="sr-only">Buscar restaurante ou comida</label>
+                <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#BD122C" viewBox="0 0 256 256" class="absolute left-4 top-1/2 -translate-y-1/2">
+                        <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+                    </svg>
+                    <input id="inputBusca" type="search" placeholder="Buscar restaurante ou comida" class="w-full bg-white/80 border border-preto/10 rounded-full py-3 pl-12 pr-4 outline-none shadow-md focus:border-vermelho transition-all">
+                </div>
+            </div>
             <div id="containerRestaurantes" class="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 md:px-0"></div>
+            <div id="mensagemBuscaVazia" class="hidden px-6 md:px-0">
+                <div class="bg-white/70 border border-preto/10 rounded-xl p-6 text-center shadow-md">
+                    <h2 class="font-bold font-inter text-preto">Nada encontrado</h2>
+                    <p class="text-sm text-preto/70 mt-1">Tente buscar por restaurante, prato ou categoria.</p>
+                </div>
+            </div>
         </section>
         <!-- TELA 2: CARDÁPIO (escondida inicialmente) -->
         <section id="telaCardapio" class="hidden">

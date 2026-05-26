@@ -86,12 +86,39 @@ function obterStatusRestaurante(restaurante) {
     }
 }
 
-// Monta os cards da tela inicial com todos os restaurantes cadastrados.
-function renderizarRestaurantes() {
-    const container = document.getElementById('containerRestaurantes')
-    container.innerHTML = ''
+// Remove acentos e deixa o texto em minúsculas para facilitar a busca.
+function normalizarTexto(texto) {
+    return texto
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+}
 
-    restaurantes.forEach((restaurante) => {
+// Verifica se o restaurante combina com o termo buscado.
+function restauranteCombinaComBusca(restaurante, termoBusca) {
+    if(!termoBusca) return true
+
+    const textosBusca = [
+        restaurante.nome,
+        restaurante.endereco,
+        ...restaurante.categorias,
+        ...restaurante.pratos.flatMap(prato => [prato.nome, prato.descricao, prato.categoria])
+    ]
+
+    return textosBusca.some(texto => normalizarTexto(texto).includes(termoBusca))
+}
+
+// Monta os cards da tela inicial com os restaurantes filtrados pela busca.
+function renderizarRestaurantes(termo = '') {
+    const container = document.getElementById('containerRestaurantes')
+    const mensagemVazia = document.getElementById('mensagemBuscaVazia')
+    const termoBusca = normalizarTexto(termo.trim())
+    const restaurantesFiltrados = restaurantes.filter(restaurante => restauranteCombinaComBusca(restaurante, termoBusca))
+
+    container.innerHTML = ''
+    mensagemVazia.classList.toggle('hidden', restaurantesFiltrados.length > 0)
+
+    restaurantesFiltrados.forEach((restaurante) => {
         const status = obterStatusRestaurante(restaurante)
         const card = document.createElement('div')
         card.className = 'border-2 flex flex-col gap-2 bg-branco/30 backdrop-blur border-preto/5 text-preto rounded p-4 shadow-xl transition-all duration-200'
@@ -111,7 +138,6 @@ function renderizarRestaurantes() {
                 </svg>
                 ${restaurante.avaliacao}
             </p>
-            </div>
 
             <p class="text-preto/80 text-sm flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#BD122C" viewBox="0 0 256 256">
@@ -145,6 +171,11 @@ function renderizarRestaurantes() {
     })
 }
 renderizarRestaurantes()
+
+// Filtra a lista de restaurantes enquanto o usuário digita na busca.
+document.getElementById('inputBusca').addEventListener('input', (event) => {
+    renderizarRestaurantes(event.target.value)
+})
 
 // Esconde as telas principais e mostra apenas a tela recebida por parâmetro.
 function mostrarTela(tela){
