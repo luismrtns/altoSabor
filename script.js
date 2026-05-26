@@ -133,28 +133,28 @@ function renderizarRestaurantes(termo = '') {
             </div>
 
             <p class="text-preto/80 flex items-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#BD122C" viewBox="0 0 256 256">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#B84A34" viewBox="0 0 256 256">
                     <path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"></path>
                 </svg>
                 ${restaurante.avaliacao}
             </p>
 
             <p class="text-preto/80 text-sm flex items-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#BD122C" viewBox="0 0 256 256">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#B84A34" viewBox="0 0 256 256">
                     <path d="M200,75.64V40a16,16,0,0,0-16-16H72A16,16,0,0,0,56,40V76a16.08,16.08,0,0,0,6.41,12.8L114.67,128,62.4,167.2A16.07,16.07,0,0,0,56,180v36a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V180.36a16,16,0,0,0-6.36-12.77L141.26,128l52.38-39.59A16.05,16.05,0,0,0,200,75.64Z"></path>
                 </svg>
                 ${restaurante.tempo}
             </p>
 
             <p class="text-preto/80 text-sm flex items-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#BD122C" viewBox="0 0 256 256">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#B84A34" viewBox="0 0 256 256">
                     <path d="M128,16a88.1,88.1,0,0,0-88,88c0,75.3,80,132.17,83.41,134.55a8,8,0,0,0,9.18,0C136,236.17,216,179.3,216,104A88.1,88.1,0,0,0,128,16Zm0,56a32,32,0,1,1-32,32A32,32,0,0,1,128,72Z"></path>
                 </svg>
                 ${restaurante.endereco}
             </p>
 
             <p class="text-preto/80 text-sm flex items-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#BD122C" viewBox="0 0 256 256">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#B84A34" viewBox="0 0 256 256">
                     <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm56,112H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48a8,8,0,0,1,0,16Z"></path>
                 </svg>
                 ${restaurante.horario}
@@ -410,7 +410,7 @@ function atualizarCarrinho(){
     if(carrinho.length === 0){
         lista.innerHTML = `
             <p class="text-gray-500 text-xl flex items-center justify-center gap-2 mt-10">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#991B1B" viewBox="0 0 256 256">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#8F3326" viewBox="0 0 256 256">
                 <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM80,140a12,12,0,1,1,12,12A12,12,0,0,1,80,140Zm78.66,48.43a8,8,0,0,1-11.09,2.23C141.07,186.34,136,184,128,184s-13.07,2.34-19.57,6.66a8,8,0,0,1-8.86-13.32C108,171.73,116.06,168,128,168s20,3.73,28.43,9.34A8,8,0,0,1,158.66,188.43ZM164,152a12,12,0,1,1,12-12A12,12,0,0,1,164,152Zm16.44-57.34-48,32a8,8,0,0,1-8.88,0l-48-32a8,8,0,1,1,8.88-13.32L128,110.39l43.56-29a8,8,0,0,1,8.88,13.32Z"></path>
                 </svg>
                 O seu carrinho está vazio.
