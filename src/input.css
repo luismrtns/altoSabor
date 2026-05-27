@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @source "../script.js";
+@source "../js/**/*.js";
 @variant dark (&:where(.dark, .dark *));
 @theme{
     --color-vermelho: #B84A34;
