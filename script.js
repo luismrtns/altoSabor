@@ -121,7 +121,7 @@ function renderizarRestaurantes(termo = '') {
     restaurantesFiltrados.forEach((restaurante) => {
         const status = obterStatusRestaurante(restaurante)
         const card = document.createElement('div')
-        card.className = 'border-2 flex flex-col gap-2 bg-branco/30 backdrop-blur border-preto/5 text-preto rounded p-4 shadow-xl transition-all duration-200'
+        card.className = 'border-2 flex flex-col gap-2 bg-branco/30 backdrop-blur border-preto/5 text-preto rounded-lg p-4 shadow-xl transition-all duration-200'
         card.innerHTML = `
             <div class="flex items-center gap-4">
                 <div class="w-28 h-28 flex items-center justify-center shrink-0">
@@ -204,7 +204,6 @@ function abrirCardapio(id){
     document.getElementById('notaCardapio').textContent = restauranteAtivo.avaliacao;
     document.getElementById('tempoTexto').textContent = restauranteAtivo.tempo
     document.getElementById('enderecoTexto').textContent = restauranteAtivo.endereco
-    document.getElementById('horarioTexto').textContent = restauranteAtivo.horario
     document.getElementById('containerCategorias').innerHTML = '';
 
     renderizarCategorias();

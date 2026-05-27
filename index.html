@@ -45,7 +45,12 @@
             <div id="containerRestaurantes" class="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 md:px-0"></div>
             <div id="mensagemBuscaVazia" class="hidden px-6 md:px-0">
                 <div class="bg-white/70 border border-preto/10 rounded-xl p-6 text-center shadow-md">
-                    <h2 class="font-bold font-inter text-preto">Nada encontrado</h2>
+                    <h2 class="font-bold font-inter text-preto flex flex-col items-center gap-1 justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" fill="#b84a34" viewBox="0 0 256 256">
+                            <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM92,96a12,12,0,1,1-12,12A12,12,0,0,1,92,96Zm80,86.92A8,8,0,0,1,161.08,180c-7.47-12.91-19.21-20-33.08-20s-25.61,7.1-33.08,20a8,8,0,1,1-13.84-8c10.29-17.79,27.39-28,46.92-28s36.63,10.2,46.92,28A8,8,0,0,1,172,182.92ZM164,120a12,12,0,1,1,12-12A12,12,0,0,1,164,120Z"></path>
+                        </svg>
+                        Nada encontrado
+                    </h2>
                     <p class="text-sm text-preto/70 mt-1">Tente buscar por restaurante, prato ou categoria.</p>
                 </div>
             </div>
@@ -91,17 +96,11 @@
                         </svg>
                         <span id="enderecoTexto"></span>
                     </p>
-                    <p id="horarioCardapio" class="text-preto/70 text-sm flex items-center gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#B84A34" viewBox="0 0 256 256">
-                            <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm56,112H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48a8,8,0,0,1,0,16Z"></path>
-                        </svg>
-                        <span id="horarioTexto"></span>
-                    </p>
                 </div>
             </div>
 
             <!-- FILTRO DE CATEGORIAS -->
-            <div id="containerCategorias" class="flex justify-center md:justify-start gap-2 overflow-x-auto pb-2 mb-6">
+            <div id="containerCategorias" class="flex justify-center md:justify-start gap-2 overflow-x-auto pb-2">
                 <!-- Categorias inseridas pelo JavaScript -->
             </div>
 
