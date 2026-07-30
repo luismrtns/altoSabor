@@ -10,4 +10,5 @@ export function mostrarTela(tela){
 export function voltarParaRestaurantes() {
     mostrarTela('telaRestaurantes')
     window.history.pushState({}, '', window.location.pathname)
+    window.scrollTo({ top: 0, behavior: 'auto' })
 }

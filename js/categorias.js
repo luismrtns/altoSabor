@@ -6,19 +6,19 @@ export function renderizarCategorias(categoriaAtiva = 'Todos') {
     const restauranteAtivo = getRestauranteAtivo()
     const container = document.getElementById('containerCategorias');
 
-    container.className = `flex gap-4 items-center justify-center mb-8 p-2 rounded-full shadow-md`
+    container.className = `category-bar flex gap-2 items-center justify-center mb-8 p-2 overflow-x-auto`
     container.classList.add('relative', 'z-0');
 
     if (container.innerHTML === '') {
         const slider = document.createElement('div');
         slider.id = 'sliderCategoria';
-        slider.className = 'absolute bg-vermelho rounded-full transition-all duration-300 ease-in-out -z-10';
+        slider.className = 'absolute bg-cacau rounded-md transition-all duration-300 ease-in-out -z-10';
         container.appendChild(slider);
 
         restauranteAtivo.categorias.forEach((categoria, index) => {
             const btn = document.createElement('button');
 
-            btn.className = 'btn-categoria relative py-2 px-4 text-md font-semibold cursor-pointer transition-colors duration-300 whitespace-nowrap opacity-0 translate-y-4 rounded-full';
+            btn.className = 'btn-categoria relative py-2 px-4 text-sm font-bold cursor-pointer transition-colors duration-300 whitespace-nowrap opacity-0 translate-y-4 rounded-md';
             btn.dataset.categoria = categoria;
             btn.textContent = categoria;
             container.appendChild(btn);

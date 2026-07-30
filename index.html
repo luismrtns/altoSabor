@@ -7,44 +7,57 @@
     <link href="./src/output.css" rel="stylesheet">
     <script type="module" src="script.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Manrope:wght@200..800&display=swap');
     </style>
     <title>Alto Sabor</title>
 </head>
-<body class="min-h-screen bg-branco">
-<div class="absolute top-0 left-0 w-full h-40 bg-linear-to-b from-vermelho   to-transparent -z-10"></div>
-    <header id="header" class="bg-branco/20 backdrop-blur-lg border-b border-vermelho/40 sticky z-50 top-0 shadow-md px-3 md:px-0">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 id="logo" class="text-2xl font-semibold font-inter text-branco flex items-center gap-2 transition-all duration-300"><svg id="svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" class="fill-branco transition-all duration-300" viewBox="0 0 256 256">
+<body class="min-h-screen bg-branco font-nunito">
+    <header id="header" class="app-header sticky z-50 top-0 px-3 md:px-0">
+        <div class="max-w-7xl mx-auto px-3 md:px-6 py-3 flex justify-between items-center">
+            <h1 id="logo" class="brand-lockup flex items-center gap-3">
+                <span class="brand-symbol" aria-hidden="true"><svg id="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="fill-branco" viewBox="0 0 256 256">
                 <path d="M254.88,195.92l-54.56-92.08A15.87,15.87,0,0,0,186.55,96h0a15.85,15.85,0,0,0-13.76,7.84l-15.64,26.39a4,4,0,0,0,0,4.07l26.8,45.47a8.13,8.13,0,0,1-1.89,10.55,8,8,0,0,1-11.8-2.26L101.79,71.88a16,16,0,0,0-27.58,0L1.11,195.94a8,8,0,0,0,1,9.52A8.23,8.23,0,0,0,8.23,208H247.77a8.29,8.29,0,0,0,6.09-2.55A8,8,0,0,0,254.88,195.92ZM64.43,120,88,80l23.57,40ZM140,52a24,24,0,1,1,24,24A24,24,0,0,1,140,52Z"></path>
-            </svg>Alto Sabor</h1>
+                </svg></span>
+                <span class="flex flex-col leading-none"><strong class="text-xl md:text-2xl">Alto Sabor</strong><small class="hidden md:block text-[10px] mt-1 text-branco/60 font-bold uppercase">Comida da nossa cidade</small></span>
+            </h1>
 
-            <button id="btnAbrirCarrinho" class="relative bg-vermelho hover:bg-vermelho2 transition-all duration-200 cursor-pointer text-white px-4 py-2 rounded-full flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FAF6ED" viewBox="0 0 256 256">
+            <button id="btnAbrirCarrinho" class="cart-trigger relative cursor-pointer px-3 md:px-4 py-2 flex items-center gap-2" aria-label="Abrir carrinho">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2D201C" viewBox="0 0 256 256">
                     <path d="M230.14,58.87A8,8,0,0,0,224,56H62.68L56.6,22.57A8,8,0,0,0,48.73,16H24a8,8,0,0,0,0,16h18L67.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,160,204a28,28,0,1,0,28-28H91.17a8,8,0,0,1-7.87-6.57L80.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,230.14,58.87ZM104,204a12,12,0,1,1-12-12A12,12,0,0,1,104,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,200,204Z"></path>
                 </svg>
                 <span class="hidden md:flex">Carrinho</span>
-                <span id="contador" class="hidden absolute -top-1 -right-1 bg-white text-vermelho font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center border border-vermelho shadow-md">0</span>
+                <span id="contador" class="hidden absolute -top-2 -right-2 bg-mel text-cacau font-extrabold text-[10px] w-6 h-6 rounded-full flex items-center justify-center border-2 border-cacau">0</span>
             </button>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 py-8">
+    <main class="max-w-7xl mx-auto px-4 md:px-6 py-7 md:py-12">
         <section id="telaRestaurantes">
-            <div class="px-6 md:px-0 mb-6">
+            <div class="intro-block mb-7 md:mb-10">
+                <p class="intro-kicker text-[11px] md:text-xs mb-2">Feito na cidade, para a cidade</p>
+                <h2 class="intro-title text-3xl md:text-5xl">Seu próximo prato está por aqui.</h2>
+            </div>
+
+            <div class="mb-9 md:mb-12">
                 <label for="inputBusca" class="sr-only">Buscar restaurante ou comida</label>
-                <div class="relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#B84A34" viewBox="0 0 256 256" class="absolute left-4 top-1/2 -translate-y-1/2">
+                <div class="search-shell relative max-w-3xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#C73E2B" viewBox="0 0 256 256" class="absolute left-4 top-1/2 -translate-y-1/2">
                         <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
                     </svg>
-                    <input id="inputBusca" type="search" placeholder="Buscar restaurante ou comida" class="w-full bg-white/80 border border-preto/10 rounded-full py-3 pl-12 pr-4 outline-none shadow-md focus:border-vermelho transition-all">
+                    <input id="inputBusca" type="search" placeholder="O que você quer comer hoje?" class="w-full bg-transparent py-4 pl-12 pr-4 outline-none text-sm md:text-base">
                 </div>
             </div>
-            <div id="containerRestaurantes" class="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 md:px-0"></div>
-            <div id="mensagemBuscaVazia" class="hidden px-6 md:px-0">
-                <div class="bg-white/70 border border-preto/10 rounded-xl p-6 text-center shadow-md">
+
+            <div class="flex items-end justify-between gap-4 mb-5">
+                <div><p class="text-xs text-preto/55 font-bold uppercase mb-1">Descubra</p><h2 class="section-heading text-2xl md:text-3xl">Sabores perto de você</h2></div>
+                <span class="hidden md:inline text-sm text-preto/55">Escolha, monte o pedido e envie</span>
+            </div>
+
+            <div id="containerRestaurantes" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8"></div>
+            <div id="mensagemBuscaVazia" class="hidden">
+                <div class="surface-panel border border-preto/10 p-8 text-center shadow-md">
                     <h2 class="font-bold font-inter text-preto flex flex-col items-center gap-1 justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" fill="#b84a34" viewBox="0 0 256 256">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" fill="#C73E2B" viewBox="0 0 256 256">
                             <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM92,96a12,12,0,1,1-12,12A12,12,0,0,1,92,96Zm80,86.92A8,8,0,0,1,161.08,180c-7.47-12.91-19.21-20-33.08-20s-25.61,7.1-33.08,20a8,8,0,1,1-13.84-8c10.29-17.79,27.39-28,46.92-28s36.63,10.2,46.92,28A8,8,0,0,1,172,182.92ZM164,120a12,12,0,1,1,12-12A12,12,0,0,1,164,120Z"></path>
                         </svg>
                         Nada encontrado
@@ -55,45 +68,48 @@
         </section>
         <!-- TELA 2: CARDÁPIO (escondida inicialmente) -->
         <section id="telaCardapio" class="hidden">
-            <div class="flex justify-between items-center">
-                <button id="btnVoltarRestaurantes" class="group flex items-center py-2 px-4 rounded-full bg-branco/60 backdrop-blur-lg shadow-lg text-vermelho font-semibold mb-4 cursor-pointer hover:text-branco hover:bg-vermelho2 transition-all duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="fill-vermelho group-hover:fill-branco" viewBox="0 0 256 256">
+            <div class="flex justify-between items-center mb-5">
+                <button id="btnVoltarRestaurantes" class="icon-action group cursor-pointer" aria-label="Voltar aos restaurantes">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" class="fill-cacau" viewBox="0 0 256 256">
                         <path d="M160,80v96a8,8,0,0,1-8,8H128v40a8,8,0,0,1-13.66,5.66l-96-96a8,8,0,0,1,0-11.32l96-96A8,8,0,0,1,128,32V72h24A8,8,0,0,1,160,80Zm24-8a8,8,0,0,0-8,8v96a8,8,0,0,0,16,0V80A8,8,0,0,0,184,72Zm32,0a8,8,0,0,0-8,8v96a8,8,0,0,0,16,0V80A8,8,0,0,0,216,72Z"></path>
                     </svg>
                 </button>
-                <button id="btnCompartilharCardapio" class="flex items-center py-2 px-4 rounded-full bg-vermelho text-white font-semibold shadow-lg mb-4 mr-3 cursor-pointer hover:bg-vermelho2 transition-all duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#faf9f5" viewBox="0 0 256 256">
+                <button id="btnCompartilharCardapio" class="icon-action cursor-pointer" aria-label="Compartilhar cardápio">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2D201C" viewBox="0 0 256 256">
                         <path d="M212,200a36,36,0,1,1-69.85-12.25l-53-34.05a36,36,0,1,1,0-51.4l53-34a36.09,36.09,0,1,1,8.67,13.45l-53,34.05a36,36,0,0,1,0,24.5l53,34.05A36,36,0,0,1,212,200Z"></path>
                     </svg>
                 </button>
             </div>
 
             <!-- BANNER DO RESTAURANTE -->
-            <div class="flex justify-center items-center gap-4 mb-6 py-6 border-b border-branco/10">
-                <div class="flex justify-center">
-                    <img id="logoCardapio" src="" alt="" class="h-32 object-contain">
+            <div class="menu-banner flex items-center gap-5 md:gap-8 mb-8 p-5 md:p-8">
+                <div class="relative z-10 bg-creme w-24 h-24 md:w-36 md:h-36 p-3 flex items-center justify-center shrink-0 rounded-lg">
+                    <img id="logoCardapio" src="" alt="" class="w-full h-full object-contain">
                 </div>
-                <div class="flex flex-col gap-1">
-                    <h2 id="nomeCardapio" class="text-2xl text-preto font-bold font-inter"></h2>
+                <div class="relative z-10 flex flex-col gap-2 min-w-0">
+                    <p class="text-[10px] md:text-xs text-mel font-extrabold uppercase">Cardápio local</p>
+                    <h2 id="nomeCardapio" class="text-2xl md:text-4xl text-branco font-bold font-inter leading-tight"></h2>
                     <span id="statusCardapio" class="text-xs font-bold px-3 py-1 rounded-full w-fit"></span>
-                    <p id="avaliacaoCardapio" class="text-preto/70 flex items-center gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#B84A34" viewBox="0 0 256 256">
+                    <div class="flex flex-wrap gap-x-4 gap-y-1 mt-1">
+                    <p id="avaliacaoCardapio" class="text-branco/75 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#F4B942" viewBox="0 0 256 256">
                             <path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"></path>
                         </svg>
                         <span id="notaCardapio"></span>
                     </p>
-                    <p id="tempoCardapio" class="text-preto/70 text-sm flex items-center gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#B84A34" viewBox="0 0 256 256">
+                    <p id="tempoCardapio" class="text-branco/75 text-sm flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#F4B942" viewBox="0 0 256 256">
                             <path d="M200,75.64V40a16,16,0,0,0-16-16H72A16,16,0,0,0,56,40V76a16.08,16.08,0,0,0,6.41,12.8L114.67,128,62.4,167.2A16.07,16.07,0,0,0,56,180v36a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V180.36a16,16,0,0,0-6.36-12.77L141.26,128l52.38-39.59A16.05,16.05,0,0,0,200,75.64Z"></path>
                         </svg>
                         <span id="tempoTexto"></span>
                     </p>
-                    <p id="enderecoCardapio" class="text-preto/70 text-sm flex items-center gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#B84A34" viewBox="0 0 256 256">
+                    <p id="enderecoCardapio" class="basis-full text-branco/65 text-xs md:text-sm flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#F4B942" viewBox="0 0 256 256">
                             <path d="M128,16a88.1,88.1,0,0,0-88,88c0,75.3,80,132.17,83.41,134.55a8,8,0,0,0,9.18,0C136,236.17,216,179.3,216,104A88.1,88.1,0,0,0,128,16Zm0,56a32,32,0,1,1-32,32A32,32,0,0,1,128,72Z"></path>
                         </svg>
                         <span id="enderecoTexto"></span>
                     </p>
+                    </div>
                 </div>
             </div>
 
@@ -103,7 +119,7 @@
             </div>
 
             <!-- GRID DE PRATOS -->
-            <div id="containerPratos" class="grid grid-cols-1 md:grid-cols-4 px-4 md:px-0 gap-4 items-stretch">
+            <div id="containerPratos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6 items-stretch">
                 <!-- Pratos inseridos pelo JavaScript -->
             </div>
 
@@ -111,13 +127,13 @@
     </main>
 
 <!-- MODAL DO PRATO -->
-<div id="modalPrato" class="hidden fixed inset-0 bg-preto/60 z-50 flex items-end md:items-center justify-center transition-all duration-300">
-    <div id="conteudoModalPrato" class="bg-branco w-full md:max-w-md rounded-t-2xl md:rounded-2xl overflow-hidden translate-y-full md:translate-y-0 md:scale-90 md:opacity-0 transition-all duration-300">
+<div id="modalPrato" class="hidden fixed inset-0 bg-preto/70 backdrop-blur-sm z-50 flex items-end md:items-center justify-center transition-all duration-300">
+    <div id="conteudoModalPrato" class="surface-panel w-full md:max-w-md rounded-t-lg md:rounded-lg overflow-hidden translate-y-full md:translate-y-0 md:scale-90 md:opacity-0 transition-all duration-300 shadow-2xl">
 
         <!-- IMAGEM COM BOTÃO FECHAR -->
         <div class="relative">
             <img id="modalPratoImagem" src="" alt="" class="w-full h-52 object-cover">
-            <button id="btnFecharModalPrato" class="absolute top-3 right-3 bg-black/50 text-branco w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-black/70 transition-all">
+            <button id="btnFecharModalPrato" class="absolute top-3 right-3 bg-cacau text-branco w-9 h-9 rounded-md flex items-center justify-center cursor-pointer hover:bg-paprica transition-all" aria-label="Fechar detalhes do prato">
                 ✕
             </button>
         </div>
@@ -130,18 +146,18 @@
 
             <!-- CONTADOR -->
             <div class="flex items-center justify-center gap-6 my-2">
-                <button id="btnDiminuir" class="bg-red-100 text-vermelho w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-red-200 transition-all">
+                <button id="btnDiminuir" class="bg-mel/20 text-cacau w-10 h-10 rounded-lg flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-mel/35 transition-all" aria-label="Diminuir quantidade">
                     −
                 </button>
                 <span id="quantidadeModal" class="text-xl font-bold text-gray-800">1</span>
-                <button id="btnAumentar" class="bg-vermelho text-white w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-vermelho2 transition-all">
+                <button id="btnAumentar" class="bg-vermelho text-white w-10 h-10 rounded-lg flex items-center justify-center text-xl font-bold cursor-pointer hover:bg-vermelho2 transition-all" aria-label="Aumentar quantidade">
                     +
                 </button>
             </div>
 
             <textarea id="observacaoPrato" rows="2" placeholder="Alguma observação? Ex: Tirar cebola, carne mal passada..." class="w-full mt-3 p-2 border border-gray-300 rounded-lg text-sm outline-none focus:border-vermelho"></textarea>
             <!-- BOTÃO ADICIONAR -->
-            <button id="btnAdicionarCarrinho" class="bg-vermelho text-white py-3 rounded-full font-bold text-lg cursor-pointer hover:bg-vermelho2 transition-all duration-200">
+            <button id="btnAdicionarCarrinho" class="primary-action py-3 font-bold text-lg cursor-pointer">
                 Adicionar ao Carrinho
             </button>
         </div>
@@ -150,95 +166,121 @@
 </div>
 
 <!--MODAL CARRINHO-->
-<div id="modalCarrinho" class="hidden fixed inset-0 bg-preto/60 z-60 flex justify-end transition-all duration-300">
+<div id="modalCarrinho" class="hidden fixed inset-0 bg-preto/70 backdrop-blur-sm z-60 flex justify-end transition-all duration-300">
 
-    <div id="conteudoCarrinho" class="bg-branco w-full md:w-96 h-full flex flex-col overflow-y-auto translate-x-full transition-transform duration-300 shadow-2xl">
+    <div id="conteudoCarrinho" class="cart-drawer bg-branco w-full md:w-[460px] h-full flex flex-col overflow-y-auto translate-x-full transition-transform duration-300">
 
-        <div class="p-4 border-b border-preto/10 flex items-center justify-between bg-white shrink-0">
-            <h2 class="text-xl font-bold font-inter text-gray-800">Resumo do seu pedido</h2>
-            <button id="btnFecharCarrinho" class="text-branco flex items-center p-2 text-2xl font-bold cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#8F3326" viewBox="0 0 256 256">
+        <div class="cart-header p-5 flex items-center justify-between bg-cacau text-branco shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="cart-header-mark" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="fill-branco" viewBox="0 0 256 256">
+                        <path d="M254.88,195.92l-54.56-92.08A15.87,15.87,0,0,0,186.55,96h0a15.85,15.85,0,0,0-13.76,7.84l-15.64,26.39a4,4,0,0,0,0,4.07l26.8,45.47a8.13,8.13,0,0,1-1.89,10.55,8,8,0,0,1-11.8-2.26L101.79,71.88a16,16,0,0,0-27.58,0L1.11,195.94a8,8,0,0,0,1,9.52A8.23,8.23,0,0,0,8.23,208H247.77a8.29,8.29,0,0,0,6.09-2.55A8,8,0,0,0,254.88,195.92ZM64.43,120,88,80l23.57,40ZM140,52a24,24,0,1,1,24,24A24,24,0,0,1,140,52Z"></path>
+                    </svg>
+                </div>
+                <div><p class="text-[10px] text-mel font-bold uppercase mb-1">Comanda digital</p><h2 class="text-xl font-bold font-inter">Seu pedido</h2></div>
+            </div>
+            <button id="btnFecharCarrinho" class="text-branco flex items-center p-2 text-2xl font-bold cursor-pointer" aria-label="Fechar carrinho">
+                <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="#FFF7EA" viewBox="0 0 256 256">
                     <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm37.66,130.34a8,8,0,0,1-11.32,11.32L128,139.31l-26.34,26.35a8,8,0,0,1-11.32-11.32L116.69,128,90.34,101.66a8,8,0,0,1,11.32-11.32L128,116.69l26.34-26.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path>
                 </svg>
             </button>
         </div>
 
-        <div id="listaItensCarrinho" class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+        <div id="listaItensCarrinho" class="cart-list flex-1 overflow-y-auto p-5 flex flex-col gap-5">
             <p class="text-gray-500 text-center mt-10">O seu carrinho está vazio.</p>
         </div>
 
-        <div id="camposCheckout" class="hidden opacity-0 translate-y-4 transition-all duration-300 ease-in-out flex flex-col gap-4 p-4 bg-gray-50 border-t border-preto/10 shrink-0">
-            <div class="flex items-center justify-between gap-3">
-                <span class="font-semibold text-vermelho2">Dados do pedido</span>
-                <button id="btnRevisarPedido" type="button" class="text-sm font-semibold text-vermelho cursor-pointer">
-                    Revisar pedido
-                </button>
-            </div>
-            <input class="p-2 border rounded border-gray-300" type="text" name="nomePessoa" id="nomePessoa" placeholder="Seu nome">
-            <span class="font-semibold text-vermelho2">Como quer receber?</span>
-            <div class="grid grid-cols-2 gap-3">
-                <label class="cursor-pointer">
-                    <input type="radio" name="tipoPedido" value="Entrega" class="peer sr-only" checked>
-                    <div class="flex items-center justify-center p-3 border-2 border-gray-200 rounded-xl text-sm font-semibold transition-all duration-200 peer-checked:border-vermelho peer-checked:bg-vermelho/10">
-                        Entrega
-                    </div>
+        <div id="camposCheckout" class="cart-checkout hidden opacity-0 translate-y-4 transition-all duration-300 ease-in-out flex flex-col gap-4 p-5 shrink-0">
+            <section class="checkout-section">
+                <div class="checkout-step-header">
+                    <span class="checkout-step-number">01</span>
+                    <div class="min-w-0 flex-1"><p class="checkout-step-kicker">Seus dados</p><h3 class="checkout-step-title">Quem está pedindo?</h3></div>
+                    <button id="btnRevisarPedido" type="button" class="checkout-review-button cursor-pointer">Revisar</button>
+                </div>
+                <label for="nomePessoa" class="checkout-field-label">Nome
+                    <input class="field-control mt-2 p-3 w-full" type="text" name="nomePessoa" id="nomePessoa" placeholder="Digite seu nome">
                 </label>
+            </section>
+
+            <section class="checkout-section">
+                <div class="checkout-step-header">
+                    <span class="checkout-step-number">02</span>
+                    <div><p class="checkout-step-kicker">Recebimento</p><h3 class="checkout-step-title">Como quer receber?</h3></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <label class="cursor-pointer">
+                        <input type="radio" name="tipoPedido" value="Entrega" class="checkout-choice-input sr-only" checked>
+                        <div class="checkout-choice">
+                            <strong>Entrega</strong><small>Receber em casa</small>
+                        </div>
+                    </label>
+                    <label class="cursor-pointer">
+                        <input type="radio" name="tipoPedido" value="Retirada" class="checkout-choice-input sr-only">
+                        <div class="checkout-choice">
+                            <strong>Retirada</strong><small>Buscar no local</small>
+                        </div>
+                    </label>
+                </div>
+                <div id="camposEndereco" class="grid grid-cols-3 gap-2 mt-4">
+                    <label for="inputEndereco" class="checkout-field-label col-span-2">Endereço
+                        <input type="text" id="inputEndereco" placeholder="Rua e bairro" class="field-control mt-2 p-3 w-full">
+                    </label>
+                    <label for="numeroCasa" class="checkout-field-label">Número
+                        <input type="number" name="numeroCasa" id="numeroCasa" placeholder="Nº" class="field-control mt-2 p-3 w-full">
+                    </label>
+                </div>
+            </section>
+
+            <section class="checkout-section">
+                <div class="checkout-step-header">
+                    <span class="checkout-step-number">03</span>
+                    <div><p class="checkout-step-kicker">Pagamento</p><h3 class="checkout-step-title">Como vai pagar?</h3></div>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
                 <label class="cursor-pointer">
-                    <input type="radio" name="tipoPedido" value="Retirada" class="peer sr-only">
-                    <div class="flex items-center justify-center p-3 border-2 border-gray-200 rounded-xl text-sm font-semibold transition-all duration-200 peer-checked:border-vermelho peer-checked:bg-vermelho/10">
-                        Retirada
-                    </div>
-                </label>
-            </div>
-            <div id="camposEndereco" class="grid grid-cols-3 gap-2 my-2">
-                <input type="text" id="inputEndereco" placeholder="Endereço de entrega" class="p-2 border rounded border-gray-300 col-span-2">
-                <input type="number" name="numeroCasa" id="numeroCasa" placeholder="Nº da casa" class="p-2 border rounded border-gray-300">
-            </div>
-            <span class="font-semibold text-vermelho2">Forma de pagamento</span>
-            <div class="flex gap-3 justify-center">
-                <label class="flex-1 cursor-pointer">
-                    <input type="radio" name="pagamento" value="Pix" class="peer sr-only">
-                    <div class="flex flex-col items-center justify-center p-3 border-2 border-gray-200 rounded-xl transition-all duration-200 peer-checked:border-vermelho peer-checked:bg-vermelho/10">
+                    <input type="radio" name="pagamento" value="Pix" class="checkout-choice-input sr-only">
+                    <div class="checkout-choice checkout-payment-choice">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#000000" viewBox="0 0 256 256">
                             <path d="M235.34,116.72,139.28,20.66a16,16,0,0,0-22.56,0L20.66,116.72a16,16,0,0,0,0,22.56l96.06,96.06a16,16,0,0,0,22.56,0l96.06-96.06A16,16,0,0,0,235.34,116.72ZM128,32,184,88H160a8,8,0,0,0-5.66,2.34L128,116.68,101.66,90.34A8,8,0,0,0,96,88H72ZM56,104H92.68l24,24-24,24H56L32,128Zm72,120L72,168H96a8,8,0,0,0,5.66-2.34L128,139.31l26.34,26.35A8,8,0,0,0,160,168h24Zm72-72H163.32l-24-24,24-24H200l24,24Z"></path>
                         </svg>
-                        <span class="text-xs font-semibold">Pix</span>
+                        <strong>Pix</strong>
                     </div>
                 </label>
 
-                <label class="flex-1 cursor-pointer">
-                    <input type="radio" name="pagamento" value="Cartão" class="peer sr-only">
-                    <div class="flex flex-col items-center justify-center p-3 border-2 border-gray-200 rounded-xl transition-all duration-200 peer-checked:border-vermelho peer-checked:bg-vermelho/10">
+                <label class="cursor-pointer">
+                    <input type="radio" name="pagamento" value="Cartão" class="checkout-choice-input sr-only">
+                    <div class="checkout-choice checkout-payment-choice">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#000000" viewBox="0 0 256 256">
                             <path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z"></path>
                         </svg>
-                        <span class="text-xs font-semibold">Cartão</span>
+                        <strong>Cartão</strong>
                     </div>
                 </label>
 
-                <label class="flex-1 cursor-pointer">
-                    <input type="radio" name="pagamento" value="Dinheiro" class="peer sr-only">
-                    <div class="flex flex-col items-center justify-center p-3 border-2 border-gray-200 rounded-xl transition-all duration-200 peer-checked:border-vermelho peer-checked:bg-vermelho/10">
+                <label class="cursor-pointer">
+                    <input type="radio" name="pagamento" value="Dinheiro" class="checkout-choice-input sr-only">
+                    <div class="checkout-choice checkout-payment-choice">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#000000" viewBox="0 0 256 256">
                             <path d="M244.24,60a8,8,0,0,0-7.75-.4c-42.93,21-73.59,11.16-106,.78-34-10.89-69.25-22.14-117.95,1.64A8,8,0,0,0,8,69.24V189.17a8,8,0,0,0,11.51,7.19c42.93-21,73.59-11.16,106.05-.78,19.24,6.15,38.84,12.42,61,12.42,17.09,0,35.73-3.72,56.91-14.06a8,8,0,0,0,4.49-7.18V66.83A8,8,0,0,0,244.24,60ZM232,181.67c-40.6,18.17-70.25,8.69-101.56-1.32-19.24-6.15-38.84-12.42-61-12.42a122,122,0,0,0-45.4,9V74.33c40.6-18.17,70.25-8.69,101.56,1.32S189.14,96,232,79.09ZM128,96a32,32,0,1,0,32,32A32,32,0,0,0,128,96Zm0,48a16,16,0,1,1,16-16A16,16,0,0,1,128,144ZM56,96v48a8,8,0,0,1-16,0V96a8,8,0,1,1,16,0Zm144,64V112a8,8,0,1,1,16,0v48a8,8,0,1,1-16,0Z"></path>
                         </svg>
-                        <span class="text-xs font-semibold">Dinheiro</span>
+                        <strong>Dinheiro</strong>
                     </div>
                 </label>
-            </div>
-            <div id="containerTroco" class="hidden flex-col gap-2 mt-4">
-                <label for="inputTroco" class="text-sm font-semibold text-gray-700">Quanto vai pagar em dinheiro?</label>
-                <input type="number" id="inputTroco" placeholder="Ex: 50" class="p-2 border rounded border-gray-300 outline-none focus:border-vermelho transition-all">
-                <span id="textoTrocoCalculado" class="text-sm font-bold"></span>
-            </div>
+                </div>
+                <div id="containerTroco" class="hidden flex-col gap-2 mt-4">
+                    <label for="inputTroco" class="checkout-field-label">Valor em dinheiro</label>
+                    <input type="number" id="inputTroco" placeholder="Ex: 60" class="field-control p-3">
+                    <span id="textoTrocoCalculado" class="checkout-change-message text-sm font-bold"></span>
+                </div>
+            </section>
         </div>
 
-        <div class="p-4 border-t border-preto/10 bg-gray-50 flex flex-col gap-3 shrink-0">
-            <div class="flex justify-between items-center text-lg font-bold text-gray-800">
-                <span>Total:</span>
-                <span id="valorTotalCarrinho">R$ 0,00</span>
+        <div class="cart-footer p-5 bg-branco flex flex-col gap-4 shrink-0">
+            <div class="flex justify-between items-end gap-4">
+                <div><p class="text-[10px] text-preto/50 font-extrabold uppercase mb-1">Total do pedido</p><span class="text-sm text-preto/60">Valor dos itens</span></div>
+                <span id="valorTotalCarrinho" class="font-inter text-2xl font-extrabold text-paprica">R$ 0,00</span>
             </div>
-            <button id="btnFinalizarPedido" class="bg-vermelho text-white py-3 rounded-xl font-bold text-lg cursor-pointer hover:bg-vermelho2 transition-all duration-200 w-full">
+            <button id="btnFinalizarPedido" class="primary-action py-3 font-bold text-lg cursor-pointer w-full">
                 Continuar
             </button>
         </div>
@@ -249,10 +291,10 @@
 
 <!--MODAL DE AVISOS E CONFIRMAÇÕES-->
 <div id="modalMensagem" class="hidden fixed inset-0 bg-preto/60 z-[80] flex items-center justify-center px-4">
-    <div id="conteudoModalMensagem" class="bg-branco w-full max-w-sm rounded-2xl p-5 shadow-2xl opacity-0 scale-95 transition-all duration-200">
+    <div id="conteudoModalMensagem" class="surface-panel w-full max-w-sm p-5 shadow-2xl opacity-0 scale-95 transition-all duration-200 border border-preto/10">
         <div class="flex items-start gap-3">
             <div class="w-11 h-11 rounded-full bg-vermelho/10 flex items-center justify-center shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#B84A34" viewBox="0 0 256 256">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#C73E2B" viewBox="0 0 256 256">
                     <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,48a12,12,0,1,1-12,12A12,12,0,0,1,128,72Zm8,112a8,8,0,0,1-16,0V120a8,8,0,0,1,16,0Z"></path>
                 </svg>
             </div>
@@ -266,7 +308,7 @@
             <button id="btnCancelarMensagem" type="button" class="hidden flex-1 border border-preto/10 text-preto py-3 rounded-xl font-bold cursor-pointer hover:bg-gray-100 transition-all">
                 Cancelar
             </button>
-            <button id="btnConfirmarMensagem" type="button" class="flex-1 bg-vermelho text-white py-3 rounded-xl font-bold cursor-pointer hover:bg-vermelho2 transition-all">
+            <button id="btnConfirmarMensagem" type="button" class="primary-action flex-1 py-3 font-bold cursor-pointer">
                 Entendi
             </button>
         </div>

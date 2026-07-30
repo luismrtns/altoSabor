@@ -146,13 +146,13 @@ export function calcularTroco(event) {
 
     if (valorPago < totalPedido) {
         textoTrocoCalculado.textContent = 'Valor insuficiente para cobrir o pedido.';
-        textoTrocoCalculado.className = 'text-sm font-bold text-vermelho';
+        textoTrocoCalculado.className = 'checkout-change-message text-sm font-bold text-vermelho';
     } else if (valorPago === totalPedido) {
         textoTrocoCalculado.textContent = 'Não precisa de troco.';
-        textoTrocoCalculado.className = 'text-sm font-bold text-gray-500';
+        textoTrocoCalculado.className = 'checkout-change-message text-sm font-bold text-gray-500';
     } else {
         const troco = valorPago - totalPedido;
         textoTrocoCalculado.textContent = `O entregador levará R$ ${troco.toFixed(2).replace('.', ',')} de troco.`;
-        textoTrocoCalculado.className = 'text-sm font-bold text-green-600';
+        textoTrocoCalculado.className = 'checkout-change-message text-sm font-bold text-green-600';
     }
 }

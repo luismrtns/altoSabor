@@ -19,7 +19,7 @@ export function abrirCardapio(id){
     document.getElementById('logoCardapio').src = restauranteAtivo.logo;
     document.getElementById('nomeCardapio').textContent = restauranteAtivo.nome;
     document.getElementById('statusCardapio').textContent = status.texto;
-    document.getElementById('statusCardapio').className = `${status.classe} text-xs font-bold px-3 py-1 rounded-full w-fit`;
+    document.getElementById('statusCardapio').className = `status-badge ${status.classe} text-xs font-bold px-3 py-1 w-fit`;
     document.getElementById('notaCardapio').textContent = restauranteAtivo.avaliacao;
     document.getElementById('tempoTexto').textContent = restauranteAtivo.tempo
     document.getElementById('enderecoTexto').textContent = restauranteAtivo.endereco
@@ -28,6 +28,7 @@ export function abrirCardapio(id){
     renderizarCategorias();
     renderizarPratos();
     mostrarTela('telaCardapio');
+    window.scrollTo({ top: 0, behavior: 'auto' })
 }
 
 // Abre o cardápio quando o usuário clica em "Ver Cardápio".

@@ -19,6 +19,6 @@ export function obterStatusRestaurante(restaurante) {
     return {
         aberto,
         texto: aberto ? `Aberto até ${fechamento}` : `Fechado, abre às ${abertura}`,
-        classe: aberto ? 'bg-green-100 text-green-700' : 'bg-red-100 text-vermelho'
+        classe: aberto ? 'bg-folha/15 text-folha' : 'bg-paprica/10 text-paprica'
     }
 }

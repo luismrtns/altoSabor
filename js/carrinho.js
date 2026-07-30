@@ -22,12 +22,15 @@ export function atualizarCarrinho(){
 
     if(carrinho.length === 0){
         lista.innerHTML = `
-            <p class="text-gray-500 text-xl flex items-center justify-center gap-2 mt-10">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#8F3326" viewBox="0 0 256 256">
+            <div class="cart-empty flex-1 flex flex-col items-center justify-center text-center px-6 py-12">
+                <div class="cart-empty-icon mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="#C73E2B" viewBox="0 0 256 256">
                     <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM80,140a12,12,0,1,1,12,12A12,12,0,0,1,80,140Zm78.66,48.43a8,8,0,0,1-11.09,2.23C141.07,186.34,136,184,128,184s-13.07,2.34-19.57,6.66a8,8,0,0,1-8.86-13.32C108,171.73,116.06,168,128,168s20,3.73,28.43,9.34A8,8,0,0,1,158.66,188.43ZM164,152a12,12,0,1,1,12-12A12,12,0,0,1,164,152Zm16.44-57.34-48,32a8,8,0,0,1-8.88,0l-48-32a8,8,0,1,1,8.88-13.32L128,110.39l43.56-29a8,8,0,0,1,8.88,13.32Z"></path>
                 </svg>
-                O seu carrinho está vazio.
-            </p>
+                </div>
+                <h3 class="font-inter text-xl font-bold text-cacau">Sua comanda está vazia</h3>
+                <p class="text-sm text-preto/55 mt-2 max-w-60">Escolha um prato do cardápio para começar seu pedido.</p>
+            </div>
         `;
         totalCarrinho.textContent = 'R$ 0,00'
         return
@@ -37,31 +40,35 @@ export function atualizarCarrinho(){
     const nomeRestaurantePedido = carrinho[0].nomeRestaurante
 
     const resumoRestaurante = document.createElement('div')
-    resumoRestaurante.className = 'text-sm text-gray-600 bg-red-50 border border-red-100 rounded-lg p-3'
-    resumoRestaurante.innerHTML = `Pedido em <strong class="text-vermelho">${nomeRestaurantePedido}</strong>`
+    resumoRestaurante.className = 'cart-restaurant-label flex items-center justify-between gap-3 text-sm text-preto/65 py-3'
+    resumoRestaurante.innerHTML = `<span>Pedido em</span><strong class="font-inter text-cacau text-right">${nomeRestaurantePedido}</strong>`
     lista.appendChild(resumoRestaurante)
 
     carrinho.forEach((item, index) => {
         valorTotal += item.precoTotal
 
         const div = document.createElement('div')
-        div.className = 'text-xl'
+        div.className = 'cart-item flex flex-col gap-4'
         div.innerHTML = `
-            <div class="flex flex-col">
-                <span class="font-bold text-gray-800">${item.quantidade}x ${item.nome}</span>
-                <span class="text-gray-500 text-sm">R$ ${item.precoUnitario.toFixed(2).replace('.', ',')} cada</span>
-            </div>
-            <div class="flex items-center gap-3">
-                <span class="font-bold text-vermelho">R$ ${item.precoTotal.toFixed(2).replace('.', ',')}</span>
-                <button class="btnRemoverItem text-gray-400 hover:text-vermelho font-bold cursor-pointer flex items-center" data-index="${index}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="fill-vermelho p-1 hover:fill-vermelho2" viewBox="0 0 256 256">
+            <div class="flex items-start gap-3">
+                <span class="cart-quantity-stamp shrink-0">${item.quantidade}x</span>
+                <div class="min-w-0 flex-1 flex flex-col">
+                    <span class="font-inter font-bold text-cacau leading-tight">${item.nome}</span>
+                    <span class="text-preto/50 text-xs mt-1">R$ ${item.precoUnitario.toFixed(2).replace('.', ',')} por unidade</span>
+                    ${item.observacao ? `<span class="cart-observation text-xs mt-2">“${item.observacao}”</span>` : ''}
+                </div>
+                <button class="btnRemoverItem cart-remove-button cursor-pointer flex items-center justify-center shrink-0" data-index="${index}" aria-label="Remover ${item.nome}" title="Remover item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="fill-current" viewBox="0 0 256 256">
                         <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM112,168a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm0-120H96V40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8Z"></path>
                     </svg>
                 </button>
-                <div class="flex items-center gap-3">
-                    <button class="btnDiminuirItem bg-red-100 text-vermelho w-8 h-8 rounded-full flex items-center justify-center font-bold cursor-pointer hover:bg-red-200 transition-all" data-index="${index}">-</button>
-                    <span class="font-bold text-gray-800">${item.quantidade}</span>
-                    <button class="btnAumentarItem bg-vermelho text-white w-8 h-8 rounded-full flex items-center justify-center font-bold cursor-pointer hover:bg-vermelho2 transition-all" data-index="${index}">+</button>
+            </div>
+            <div class="flex items-center justify-between gap-3 pl-12">
+                <span class="font-inter font-extrabold text-paprica">R$ ${item.precoTotal.toFixed(2).replace('.', ',')}</span>
+                <div class="cart-stepper flex items-center gap-3">
+                    <button class="btnDiminuirItem bg-mel/20 text-cacau w-8 h-8 rounded-lg flex items-center justify-center font-bold cursor-pointer hover:bg-mel/35 transition-all" data-index="${index}" aria-label="Diminuir quantidade de ${item.nome}">-</button>
+                    <span class="font-bold text-cacau min-w-4 text-center">${item.quantidade}</span>
+                    <button class="btnAumentarItem bg-cacau text-branco w-8 h-8 rounded-lg flex items-center justify-center font-bold cursor-pointer hover:bg-caju transition-all" data-index="${index}" aria-label="Aumentar quantidade de ${item.nome}">+</button>
                 </div>
             </div>
         `
