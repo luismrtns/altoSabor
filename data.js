@@ -1,4 +1,4 @@
-const restaurantes = [
+export const restaurantes = [
     {
         id: 1,
         nome: "Pizzaria da Vila",
@@ -7,7 +7,7 @@ const restaurantes = [
         tempo: "30 min",
         endereco: "Rua das Flores, 123",
         horario: "11:00 - 23:00",
-        whatsapp: "5588987654321",
+        whatsapp: "5585985800645",
         categorias: ["Todos", "Pizzas", "Bebidas"],
         pratos: [
             {
